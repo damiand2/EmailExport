@@ -7,13 +7,14 @@ using System.Windows.Forms;
 
 namespace ExportLogic
 {
-    internal class Settings
+    public class Settings
     {
         private ILog log = LogManager.GetLogger(typeof(Settings));
         public string NetworkConfigPath { get; set; }
         public string ProposalPath { get; set; }
         public string MarketingPath { get; set; }
         public string ProjectPath { get; set; }
+        public string AttachmentsSuffix { get; set; }
         private static Settings settings;
 
         public static Settings Initialize()
@@ -23,7 +24,7 @@ namespace ExportLogic
             var tempSettings = new Settings();
             if (!tempSettings.ReadSettingsFromFile("local-config.txt"))
                 return null;
-            if (!tempSettings.ReadSettingsFromFile(settings.NetworkConfigPath))
+            if (!tempSettings.ReadSettingsFromFile(tempSettings.NetworkConfigPath))
                 return null;
             settings = tempSettings;
             return settings;

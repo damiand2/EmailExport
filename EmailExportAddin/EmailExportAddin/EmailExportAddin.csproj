@@ -72,7 +72,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\output\</OutputPath>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
@@ -137,11 +137,11 @@
   <ItemGroup>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <Private>False</Private>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <Private>False</Private>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>False</Private>
@@ -158,35 +158,9 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ExportMailsCommand.cs" />
-    <Compile Include="ExportMailsWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExportMailsWindow.Designer.cs">
-      <DependentUpon>ExportMailsWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ExportTargetAccessor.cs" />
-    <Compile Include="ProjectName.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProjectName.Designer.cs">
-      <DependentUpon>ProjectName.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WaitDialogWithWork.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WaitDialogWithWork.designer.cs">
-      <DependentUpon>WaitDialogWithWork.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="ExportMailsWindow.resx">
-      <DependentUpon>ExportMailsWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProjectName.resx">
-      <DependentUpon>ProjectName.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -196,11 +170,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="WaitDialogWithWork.resx">
-      <DependentUpon>WaitDialogWithWork.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="EmailExportAddin_TemporaryKey.pfx" />
-    <None Include="logging.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -211,7 +181,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Ribbon1.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -227,9 +196,6 @@
     <EmbeddedResource Include="Ribbon1.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="local-config.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Mail.Read.Ribbon.xml" />
   </ItemGroup>
   <ItemGroup>

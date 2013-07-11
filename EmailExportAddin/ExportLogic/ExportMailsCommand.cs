@@ -8,19 +8,22 @@ using System.Windows.Forms;
 
 namespace ExportLogic
 {
-    internal class ExportMailsCommand
+    public class ExportMailsCommand
     {
         private ILog log = LogManager.GetLogger(typeof(ExportMailsCommand));
-        public List<MailItem> Mails { get; set; }
+        public MailItem[] Mails { get; set; }
 
         public void Execute()
         {
             try
             {
-                log.Debug("Starting export mail command with number of mails: " + Mails.Count);
+                log.Debug("Starting export mail command with number of mails: " + Mails.Length);
                 var settings = Settings.Initialize();
                 if (settings == null)
                     return;
+
+                ExportMailsWindow window = new ExportMailsWindow { settings = settings };
+                window.ShowDialog();
 
             }
             catch (System.Exception ex)
@@ -30,7 +33,7 @@ namespace ExportLogic
             }
             finally
             {
-                log.Debug("Ending export mail command with number of mails: " + Mails.Count);
+                log.Debug("Ending export mail command with number of mails: " + Mails.Length);
             }
             
         }

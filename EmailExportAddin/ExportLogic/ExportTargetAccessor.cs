@@ -14,11 +14,22 @@ namespace ExportLogic
     {
         Settings settings;
 
-        private static const Regex nameRegex = new Regex(@"\d{5,7}(\s*\((?<name>.*)\)){0,1}", RegexOptions.Compiled | RegexOptions.Singleline);
+        //private static const Regex nameRegex = new Regex(@"\d{5,7}(\s*\((?<name>.*)\)){0,1}", RegexOptions.Compiled | RegexOptions.Singleline);
 
         public ExportTargetAccessor(Settings s)
         {
             settings = s;
+        }
+
+        public void CreateProjectFolder(SingleResult result)
+        {
+            if (result == null || string.IsNullOrEmpty(result.ProjectName) || string.IsNullOrEmpty(result.ProjectPath))
+                return;
+
+            var dir = new DirectoryInfo(result.ProjectPath);
+
+            if (CreateFolder(dir.Parent, dir.Name))
+                CreateFolder(dir, "Mail");                       
         }
 
         public FindResults Find(string number)
@@ -41,7 +52,7 @@ namespace ExportLogic
             var results = new FindResults();
             GatherAllResults(number, yearPart, results);
             FillMissingProjectNames(results);
-            switch(projectTypePart)
+            switch (projectTypePart)
             {
                 case "00": results.DefaultResult = TargetType.Proposal;
                     break;
@@ -83,40 +94,58 @@ namespace ExportLogic
 
         private SingleResult FindResult(string rootPath, string yearPart, string projectNumber)
         {
+            var originalRoot = rootPath;
             rootPath = rootPath.AppendSlash() + yearPart.AppendSlash();
             if (!Directory.Exists(rootPath))
-                return new SingleResult { Exists = false, NoAccess = true, WarningMessage = "Folder for specified year: " + yearPart + " does not exist at all, please create it manually" };
-            var dirs = Directory.GetDirectories(rootPath, projectNumber + "*", SearchOption.TopDirectoryOnly);
-            if(dirs.Length > 1)
+                return new SingleResult { Exists = false, NoAccess = true, FatalError = true, WarningMessage = "Folder for specified year: " + yearPart + " does not exist at all, please create it manually", ProjectPath = originalRoot };
+
+            var dirs = Directory.GetDirectories(rootPath, projectNumber, SearchOption.TopDirectoryOnly);
+            if(dirs.Length != 1)
+                dirs = Directory.GetDirectories(rootPath, projectNumber + " *", SearchOption.TopDirectoryOnly);
+            if (dirs.Length > 1)
             {
                 string message = "Found more then one folder in '" + rootPath + "' that matches project number: " + projectNumber + ". Export mail does not know what to do with that situation";
                 MessageBox.Show(message);
-                return new SingleResult { Exists = false, NoAccess = true, WarningMessage = message};
+                return new SingleResult { Exists = false, NoAccess = true, FatalError = true, WarningMessage = message, ProjectPath = originalRoot };
             }
             if (dirs.Length == 0)
                 return new SingleResult { Exists = false, WarningMessage = "Main project's folder does not exist", ProjectPath = rootPath };
-            
-            DirectoryInfo dir = new DirectoryInfo(dirs[0]);            
+
+            DirectoryInfo dir = new DirectoryInfo(dirs[0]);
 
             if (!HasWritePermissions(dir))
                 return new SingleResult { Exists = true, NoAccess = true, WarningMessage = "No write permissions to folder", ProjectName = dir.Name, ProjectPath = dir.FullName };
 
-            CheckMailSubfolder(dir);
-            return new SingleResult { Exists = true, NoAccess = false, ProjectName = dir.Name, ProjectPath = dir.FullName };
-        }
+            var result = new SingleResult { Exists = true, NoAccess = false, ProjectName = dir.Name, ProjectPath = dir.FullName };
+            if (!CreateFolder(dir, "Mail"))
+            {
+                result.NoAccess = true;
+                result.WarningMessage = "Could not create Mail folder for project";
+            }
+            
+            return result;
+        }        
 
-        private void CheckMailSubfolder(DirectoryInfo dir)
+        private bool CreateFolder(DirectoryInfo dir, string folderName)
         {
-            var dirs = dir.GetDirectories("Mail", SearchOption.TopDirectoryOnly);
-            if (dirs.Length == 0)
-                dir.CreateSubdirectory("Mail");
-
+            try
+            {
+                var dirs = dir.GetDirectories(folderName, SearchOption.TopDirectoryOnly);
+                if (dirs.Length == 0)
+                    dir.CreateSubdirectory(folderName);
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("No write access to create folder '" + folderName + "' underneath '" + dir.FullName + "'");
+                return false;
+            }
         }
 
         private bool HasWritePermissions(DirectoryInfo di)
         {
             try
-            {                
+            {
                 var acl = di.GetAccessControl();
                 var rules = acl.GetAccessRules(true, true, typeof(NTAccount));
 
@@ -139,7 +168,7 @@ namespace ExportLogic
                         if (principal.IsInRole(ntAccount.Value))
                         {
                             return true;
-                        }                        
+                        }
                     }
                 }
                 return false;
@@ -149,14 +178,14 @@ namespace ExportLogic
                 return false;
             }
         }
-        
+
     }
 
     public static class StringExtensions
     {
         public static string AppendSlash(this string value)
         {
-            if(!value.EndsWith("\\"))
+            if (!value.EndsWith("\\"))
                 value += "\\";
             return value;
         }
@@ -168,14 +197,14 @@ namespace ExportLogic
         public TargetType DefaultResult;
         public bool IsAtLeastOneValid()
         {
-            return Results.Any(r => r.Exists && r.NoAccess == false && !string.IsNullOrEmpty(r.ProjectName));
+            return Results.Any(r => r.Exists && r.NoAccess == false && !r.FatalError && !string.IsNullOrEmpty(r.ProjectName));
         }
     }
 
     public enum TargetType
     {
         Proposal,
-        Project, 
+        Project,
         Marketing
     }
 
@@ -187,6 +216,7 @@ namespace ExportLogic
         public bool Exists;
         public bool NoAccess;
         public string WarningMessage;
+        public bool FatalError;
 
     }
 }

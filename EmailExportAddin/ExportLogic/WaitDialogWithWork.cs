@@ -14,14 +14,16 @@ namespace ExportLogic
     {
         private ILog log = LogManager.GetLogger(typeof(WaitDialogWithWork));
         private Action work;
+        private bool workInBackground;
         public WaitDialogWithWork()
         {
             InitializeComponent();
         }
 
-        public void ShowWithWork(Action work)
+        public void ShowWithWork(Action work, bool workInBackground)
         {            
             this.work = work;
+            this.workInBackground = workInBackground;
             ShowDialog();
         }
 
@@ -30,6 +32,36 @@ namespace ExportLogic
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
+            if (workInBackground)
+                BackgroundWork();
+            else
+                MainThreadWork();
+        }
+
+        private void MainThreadWork()
+        {
+            var currentDialog = Current;
+            Current = this;
+            try
+            {
+                pbWork.Style = ProgressBarStyle.Blocks;
+                work();
+            }
+            catch (Exception ex)
+            {
+                log.Error("error in work", ex);
+                MessageBox.Show(ex.Message, "Error in Email Export");
+            }
+            finally
+            {
+                Done();
+                Current = currentDialog;
+            }
+
+        }
+
+        private void BackgroundWork()
+        {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 var currentDialog = Current;
@@ -60,7 +92,9 @@ namespace ExportLogic
                 BeginInvoke((Action)delegate { ShowMessage(message); });
                 return;
             }
-            lMessage.Text = message;           
+            lMessage.Text = message;        
+            if(!workInBackground)
+                System.Windows.Forms.Application.DoEvents();
         }
 
         public void Done()

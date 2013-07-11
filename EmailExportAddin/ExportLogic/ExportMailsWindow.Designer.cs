@@ -32,19 +32,19 @@
             this.tbProjectNumber = new System.Windows.Forms.TextBox();
             this.bRefreshLocations = new System.Windows.Forms.Button();
             this.gbAvailableLocations = new System.Windows.Forms.GroupBox();
-            this.lProposalStatus = new System.Windows.Forms.Label();
-            this.cbRemoveAfterExport = new System.Windows.Forms.CheckBox();
-            this.rbProposal = new System.Windows.Forms.RadioButton();
-            this.rbMarketing = new System.Windows.Forms.RadioButton();
-            this.rbProject = new System.Windows.Forms.RadioButton();
-            this.lMarketingStatus = new System.Windows.Forms.Label();
-            this.lProjectStatus = new System.Windows.Forms.Label();
-            this.bProposalExport = new System.Windows.Forms.Button();
-            this.bProposalView = new System.Windows.Forms.Button();
-            this.bMarketingView = new System.Windows.Forms.Button();
-            this.bMarketingExport = new System.Windows.Forms.Button();
             this.bProjectView = new System.Windows.Forms.Button();
             this.bProjectExport = new System.Windows.Forms.Button();
+            this.bMarketingView = new System.Windows.Forms.Button();
+            this.bMarketingExport = new System.Windows.Forms.Button();
+            this.bProposalView = new System.Windows.Forms.Button();
+            this.bProposalExport = new System.Windows.Forms.Button();
+            this.lProjectStatus = new System.Windows.Forms.Label();
+            this.lMarketingStatus = new System.Windows.Forms.Label();
+            this.rbProject = new System.Windows.Forms.RadioButton();
+            this.rbMarketing = new System.Windows.Forms.RadioButton();
+            this.rbProposal = new System.Windows.Forms.RadioButton();
+            this.lProposalStatus = new System.Windows.Forms.Label();
+            this.cbRemoveAfterExport = new System.Windows.Forms.CheckBox();
             this.gbExportHistory = new System.Windows.Forms.GroupBox();
             this.lbExportHistory = new System.Windows.Forms.ListBox();
             this.bExport = new System.Windows.Forms.Button();
@@ -69,6 +69,7 @@
             this.tbProjectNumber.TabIndex = 1;
             this.tbProjectNumber.TextChanged += new System.EventHandler(this.tbProjectNumber_TextChanged);
             this.tbProjectNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbProjectNumber_KeyPress);
+            this.tbProjectNumber.Validated += new System.EventHandler(this.tbProjectNumber_Validated);
             // 
             // bRefreshLocations
             // 
@@ -78,6 +79,7 @@
             this.bRefreshLocations.TabIndex = 2;
             this.bRefreshLocations.Text = "Refresh";
             this.bRefreshLocations.UseVisualStyleBackColor = true;
+            this.bRefreshLocations.Click += new System.EventHandler(this.bRefreshLocations_Click);
             // 
             // gbAvailableLocations
             // 
@@ -100,93 +102,23 @@
             this.gbAvailableLocations.TabStop = false;
             this.gbAvailableLocations.Text = "Available locations:";
             // 
-            // lProposalStatus
+            // bProjectView
             // 
-            this.lProposalStatus.Location = new System.Drawing.Point(110, 19);
-            this.lProposalStatus.Name = "lProposalStatus";
-            this.lProposalStatus.Size = new System.Drawing.Size(124, 23);
-            this.lProposalStatus.TabIndex = 1;
-            this.lProposalStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.bProjectView.Location = new System.Drawing.Point(321, 65);
+            this.bProjectView.Name = "bProjectView";
+            this.bProjectView.Size = new System.Drawing.Size(75, 23);
+            this.bProjectView.TabIndex = 15;
+            this.bProjectView.Text = "View";
+            this.bProjectView.UseVisualStyleBackColor = true;
             // 
-            // cbRemoveAfterExport
+            // bProjectExport
             // 
-            this.cbRemoveAfterExport.AutoSize = true;
-            this.cbRemoveAfterExport.Location = new System.Drawing.Point(12, 396);
-            this.cbRemoveAfterExport.Name = "cbRemoveAfterExport";
-            this.cbRemoveAfterExport.Size = new System.Drawing.Size(122, 17);
-            this.cbRemoveAfterExport.TabIndex = 4;
-            this.cbRemoveAfterExport.Text = "Remove after export";
-            this.cbRemoveAfterExport.UseVisualStyleBackColor = true;
-            // 
-            // rbProposal
-            // 
-            this.rbProposal.AutoSize = true;
-            this.rbProposal.Location = new System.Drawing.Point(6, 19);
-            this.rbProposal.Name = "rbProposal";
-            this.rbProposal.Size = new System.Drawing.Size(98, 17);
-            this.rbProposal.TabIndex = 5;
-            this.rbProposal.TabStop = true;
-            this.rbProposal.Text = "Proposal Folder";
-            this.rbProposal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rbProposal.UseVisualStyleBackColor = true;
-            // 
-            // rbMarketing
-            // 
-            this.rbMarketing.AutoSize = true;
-            this.rbMarketing.Location = new System.Drawing.Point(6, 42);
-            this.rbMarketing.Name = "rbMarketing";
-            this.rbMarketing.Size = new System.Drawing.Size(104, 17);
-            this.rbMarketing.TabIndex = 6;
-            this.rbMarketing.TabStop = true;
-            this.rbMarketing.Text = "Marketing Folder";
-            this.rbMarketing.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rbMarketing.UseVisualStyleBackColor = true;
-            // 
-            // rbProject
-            // 
-            this.rbProject.AutoSize = true;
-            this.rbProject.Location = new System.Drawing.Point(6, 65);
-            this.rbProject.Name = "rbProject";
-            this.rbProject.Size = new System.Drawing.Size(90, 17);
-            this.rbProject.TabIndex = 7;
-            this.rbProject.TabStop = true;
-            this.rbProject.Text = "Project Folder";
-            this.rbProject.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rbProject.UseVisualStyleBackColor = true;
-            // 
-            // lMarketingStatus
-            // 
-            this.lMarketingStatus.Location = new System.Drawing.Point(110, 42);
-            this.lMarketingStatus.Name = "lMarketingStatus";
-            this.lMarketingStatus.Size = new System.Drawing.Size(124, 23);
-            this.lMarketingStatus.TabIndex = 8;
-            this.lMarketingStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lProjectStatus
-            // 
-            this.lProjectStatus.Location = new System.Drawing.Point(110, 65);
-            this.lProjectStatus.Name = "lProjectStatus";
-            this.lProjectStatus.Size = new System.Drawing.Size(124, 23);
-            this.lProjectStatus.TabIndex = 9;
-            this.lProjectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // bProposalExport
-            // 
-            this.bProposalExport.Location = new System.Drawing.Point(240, 19);
-            this.bProposalExport.Name = "bProposalExport";
-            this.bProposalExport.Size = new System.Drawing.Size(75, 23);
-            this.bProposalExport.TabIndex = 10;
-            this.bProposalExport.Text = "Export";
-            this.bProposalExport.UseVisualStyleBackColor = true;
-            // 
-            // bProposalView
-            // 
-            this.bProposalView.Location = new System.Drawing.Point(321, 19);
-            this.bProposalView.Name = "bProposalView";
-            this.bProposalView.Size = new System.Drawing.Size(75, 23);
-            this.bProposalView.TabIndex = 11;
-            this.bProposalView.Text = "View";
-            this.bProposalView.UseVisualStyleBackColor = true;
+            this.bProjectExport.Location = new System.Drawing.Point(240, 65);
+            this.bProjectExport.Name = "bProjectExport";
+            this.bProjectExport.Size = new System.Drawing.Size(75, 23);
+            this.bProjectExport.TabIndex = 14;
+            this.bProjectExport.Text = "Export";
+            this.bProjectExport.UseVisualStyleBackColor = true;
             // 
             // bMarketingView
             // 
@@ -206,23 +138,93 @@
             this.bMarketingExport.Text = "Export";
             this.bMarketingExport.UseVisualStyleBackColor = true;
             // 
-            // bProjectView
+            // bProposalView
             // 
-            this.bProjectView.Location = new System.Drawing.Point(321, 65);
-            this.bProjectView.Name = "bProjectView";
-            this.bProjectView.Size = new System.Drawing.Size(75, 23);
-            this.bProjectView.TabIndex = 15;
-            this.bProjectView.Text = "View";
-            this.bProjectView.UseVisualStyleBackColor = true;
+            this.bProposalView.Location = new System.Drawing.Point(321, 19);
+            this.bProposalView.Name = "bProposalView";
+            this.bProposalView.Size = new System.Drawing.Size(75, 23);
+            this.bProposalView.TabIndex = 11;
+            this.bProposalView.Text = "View";
+            this.bProposalView.UseVisualStyleBackColor = true;
             // 
-            // bProjectExport
+            // bProposalExport
             // 
-            this.bProjectExport.Location = new System.Drawing.Point(240, 65);
-            this.bProjectExport.Name = "bProjectExport";
-            this.bProjectExport.Size = new System.Drawing.Size(75, 23);
-            this.bProjectExport.TabIndex = 14;
-            this.bProjectExport.Text = "Export";
-            this.bProjectExport.UseVisualStyleBackColor = true;
+            this.bProposalExport.Location = new System.Drawing.Point(240, 19);
+            this.bProposalExport.Name = "bProposalExport";
+            this.bProposalExport.Size = new System.Drawing.Size(75, 23);
+            this.bProposalExport.TabIndex = 10;
+            this.bProposalExport.Text = "Export";
+            this.bProposalExport.UseVisualStyleBackColor = true;
+            // 
+            // lProjectStatus
+            // 
+            this.lProjectStatus.Location = new System.Drawing.Point(110, 65);
+            this.lProjectStatus.Name = "lProjectStatus";
+            this.lProjectStatus.Size = new System.Drawing.Size(124, 23);
+            this.lProjectStatus.TabIndex = 9;
+            this.lProjectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lMarketingStatus
+            // 
+            this.lMarketingStatus.Location = new System.Drawing.Point(110, 42);
+            this.lMarketingStatus.Name = "lMarketingStatus";
+            this.lMarketingStatus.Size = new System.Drawing.Size(124, 23);
+            this.lMarketingStatus.TabIndex = 8;
+            this.lMarketingStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // rbProject
+            // 
+            this.rbProject.AutoSize = true;
+            this.rbProject.Location = new System.Drawing.Point(6, 65);
+            this.rbProject.Name = "rbProject";
+            this.rbProject.Size = new System.Drawing.Size(90, 17);
+            this.rbProject.TabIndex = 7;
+            this.rbProject.TabStop = true;
+            this.rbProject.Text = "Project Folder";
+            this.rbProject.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rbProject.UseVisualStyleBackColor = true;
+            // 
+            // rbMarketing
+            // 
+            this.rbMarketing.AutoSize = true;
+            this.rbMarketing.Location = new System.Drawing.Point(6, 42);
+            this.rbMarketing.Name = "rbMarketing";
+            this.rbMarketing.Size = new System.Drawing.Size(104, 17);
+            this.rbMarketing.TabIndex = 6;
+            this.rbMarketing.TabStop = true;
+            this.rbMarketing.Text = "Marketing Folder";
+            this.rbMarketing.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rbMarketing.UseVisualStyleBackColor = true;
+            // 
+            // rbProposal
+            // 
+            this.rbProposal.AutoSize = true;
+            this.rbProposal.Location = new System.Drawing.Point(6, 19);
+            this.rbProposal.Name = "rbProposal";
+            this.rbProposal.Size = new System.Drawing.Size(98, 17);
+            this.rbProposal.TabIndex = 5;
+            this.rbProposal.TabStop = true;
+            this.rbProposal.Text = "Proposal Folder";
+            this.rbProposal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rbProposal.UseVisualStyleBackColor = true;
+            // 
+            // lProposalStatus
+            // 
+            this.lProposalStatus.Location = new System.Drawing.Point(110, 19);
+            this.lProposalStatus.Name = "lProposalStatus";
+            this.lProposalStatus.Size = new System.Drawing.Size(124, 23);
+            this.lProposalStatus.TabIndex = 1;
+            this.lProposalStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cbRemoveAfterExport
+            // 
+            this.cbRemoveAfterExport.AutoSize = true;
+            this.cbRemoveAfterExport.Location = new System.Drawing.Point(12, 396);
+            this.cbRemoveAfterExport.Name = "cbRemoveAfterExport";
+            this.cbRemoveAfterExport.Size = new System.Drawing.Size(122, 17);
+            this.cbRemoveAfterExport.TabIndex = 4;
+            this.cbRemoveAfterExport.Text = "Remove after export";
+            this.cbRemoveAfterExport.UseVisualStyleBackColor = true;
             // 
             // gbExportHistory
             // 
@@ -251,6 +253,7 @@
             this.bExport.TabIndex = 6;
             this.bExport.Text = "Export";
             this.bExport.UseVisualStyleBackColor = true;
+            this.bExport.Click += new System.EventHandler(this.bExport_Click);
             // 
             // ExportMailsWindow
             // 

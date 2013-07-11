@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.pbWork = new System.Windows.Forms.ProgressBar();
             this.lMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // progressBar1
+            // pbWork
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 66);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(407, 23);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.progressBar1.TabIndex = 0;
+            this.pbWork.Location = new System.Drawing.Point(12, 66);
+            this.pbWork.Name = "pbWork";
+            this.pbWork.Size = new System.Drawing.Size(407, 23);
+            this.pbWork.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbWork.TabIndex = 0;
             // 
             // lMessage
             // 
@@ -53,7 +53,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(431, 101);
             this.Controls.Add(this.lMessage);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.pbWork);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "WaitDialogWithWork";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -64,7 +64,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label lMessage;
+        public System.Windows.Forms.ProgressBar pbWork;
+        public System.Windows.Forms.Label lMessage;
     }
 }

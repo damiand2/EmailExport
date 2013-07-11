@@ -7,13 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace EmailExportAddin
+namespace ExportLogic
 {
     public partial class ProjectName : Form
     {
         public ProjectName()
         {
             InitializeComponent();
+        }
+
+        private void bOk_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void bCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

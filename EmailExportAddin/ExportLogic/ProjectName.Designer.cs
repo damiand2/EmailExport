@@ -1,4 +1,4 @@
-﻿namespace EmailExportAddin
+﻿namespace ExportLogic
 {
     partial class ProjectName
     {
@@ -59,6 +59,7 @@
             this.bOk.TabIndex = 1;
             this.bOk.Text = "OK";
             this.bOk.UseVisualStyleBackColor = true;
+            this.bOk.Click += new System.EventHandler(this.bOk_Click);
             // 
             // bCancel
             // 
@@ -69,6 +70,7 @@
             this.bCancel.TabIndex = 2;
             this.bCancel.Text = "Cancel";
             this.bCancel.UseVisualStyleBackColor = true;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
             // label1
             // 

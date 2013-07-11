@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Core;
+﻿using ExportLogic;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
@@ -112,7 +113,7 @@ namespace EmailExportAddin
 
             if (mails.Count > 0)
             {
-                var cmd = new ExportMailsCommand { Mails = mails };
+                var cmd = new ExportMailsCommand { Mails = mails.ToArray() };
                 cmd.Execute();
             }
 
