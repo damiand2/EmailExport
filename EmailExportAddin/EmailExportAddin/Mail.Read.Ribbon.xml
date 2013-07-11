@@ -1,0 +1,19 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnLoad">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabReadMessage">
+        <group id="GroupReadGetOrganized"
+               label="Email Export"
+			   insertBeforeMso="GroupRespond">		
+				<button id="MailReadSaveMailItem"					
+							size="large"
+									  screentip="Shows Email Export window for selected mails"
+									  onAction="OnAction"
+									   imageMso="SaveAndClose"
+									  label="Export mail"
+						/>			
+        </group>
+      </tab>	
+    </tabs>
+  </ribbon>
+</customUI>

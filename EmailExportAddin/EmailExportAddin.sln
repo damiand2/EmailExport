@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailExportAddin", "EmailExportAddin\EmailExportAddin.csproj", "{9E3A6CB9-053F-48E8-B54E-0DB2CC076B3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{34C727D3-19A1-4048-99E2-A311A88ADFA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportLogic", "ExportLogic\ExportLogic.csproj", "{D46C7A2E-0980-4519-A615-32C3BCD26A0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E3A6CB9-053F-48E8-B54E-0DB2CC076B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E3A6CB9-053F-48E8-B54E-0DB2CC076B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E3A6CB9-053F-48E8-B54E-0DB2CC076B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E3A6CB9-053F-48E8-B54E-0DB2CC076B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34C727D3-19A1-4048-99E2-A311A88ADFA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34C727D3-19A1-4048-99E2-A311A88ADFA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34C727D3-19A1-4048-99E2-A311A88ADFA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34C727D3-19A1-4048-99E2-A311A88ADFA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D46C7A2E-0980-4519-A615-32C3BCD26A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D46C7A2E-0980-4519-A615-32C3BCD26A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D46C7A2E-0980-4519-A615-32C3BCD26A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D46C7A2E-0980-4519-A615-32C3BCD26A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

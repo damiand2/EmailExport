@@ -1,0 +1,1 @@
+﻿NetworkConfigPath:\\T510W7DDE\fake_share\config.txt
