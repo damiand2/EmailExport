@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 
 // TODO:  Follow these steps to enable the Ribbon (XML) item:
@@ -68,16 +69,24 @@ namespace EmailExportAddin
 
         public void OnAction(IRibbonControl control)
         {
-            System.Diagnostics.Debugger.Break();
-            switch (control.Id)
+            try
             {
-                case "MailReadSaveMailItem":         
-                case "RibbonMenuSaveMailItems":         
-                case "ContextMenuSaveMailItem":
-                case "ContextMenuSaveMailItems":
-                    ShowExportMailWindow(control);
-                    break;               
-            }           
+                switch (control.Id)
+                {
+                    case "MailReadSaveMailItem":
+                    case "RibbonMenuSaveMailItems":
+                    case "ContextMenuSaveMailItem":
+                    case "ContextMenuSaveMailItems":
+                        ShowExportMailWindow(control);
+                        break;
+                }     
+            }
+            catch (System.Exception ex)
+            {
+                log4net.LogManager.GetLogger(typeof(Ribbon1)).Error("OnAction error:", ex);
+                MessageBox.Show("Error:" + ex.Message);                
+            }
+                  
         }
 
         private void ShowExportMailWindow(IRibbonControl control) 

@@ -22,7 +22,7 @@ namespace ExportLogic
                 if (settings == null)
                     return;
 
-                ExportMailsWindow window = new ExportMailsWindow { settings = settings };
+                ExportMailsWindow window = new ExportMailsWindow { settings = settings, Mails = Mails };
                 window.ShowDialog();
 
             }

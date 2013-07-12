@@ -244,6 +244,7 @@
             this.lbExportHistory.Name = "lbExportHistory";
             this.lbExportHistory.Size = new System.Drawing.Size(396, 222);
             this.lbExportHistory.TabIndex = 0;
+            this.lbExportHistory.SelectedIndexChanged += new System.EventHandler(this.lbExportHistory_SelectedIndexChanged);
             // 
             // bExport
             // 
