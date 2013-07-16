@@ -24,7 +24,7 @@ namespace ExportLogic
 
                 ExportMailsWindow window = new ExportMailsWindow { settings = settings, Mails = Mails };
                 window.ShowDialog();
-
+                window.Dispose();
             }
             catch (System.Exception ex)
             {                

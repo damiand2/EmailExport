@@ -14,41 +14,110 @@ namespace ExportLogic
     {
         Settings settings;
 
-        //private static const Regex nameRegex = new Regex(@"\d{5,7}(\s*\((?<name>.*)\)){0,1}", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex nameRegex = new Regex(@"(?<number>\d{5,7})(\s*(?<name>\(*.*\)*)){0,1}", RegexOptions.Compiled | RegexOptions.Singleline);
 
         public ExportTargetAccessor(Settings s)
         {
             settings = s;
         }
 
-        public void CreateProjectFolder(SingleResult result)
+        public bool CreateProjectFolder(SingleResult result, FindResults allResults, string projectNumber)
         {
-            if (result == null || string.IsNullOrEmpty(result.ProjectName) || string.IsNullOrEmpty(result.ProjectPath))
-                return;
-
+            if (result == null || string.IsNullOrEmpty(result.ProjectPath))
+                return false;
+                        
+            if (!allResults.IsAtLeastOneValid())
+            {
+                if (!SetNewProject(allResults, projectNumber))
+                    return;
+                
+            }
             var dir = new DirectoryInfo(result.ProjectPath);
-
             if (CreateFolder(dir.Parent, dir.Name))
-                CreateFolder(dir, "Mail");                       
+            {
+                if (dir.ExistsSubFolder("Emails"))
+                {
+                    result.EmailFolderPath = result.ProjectPath.AppendSlash() + "Emails".AppendSlash();
+                    return true;
+                }
+                    
+                if (dir.ExistsSubFolder("Email"))
+                {
+                    result.EmailFolderPath = result.ProjectPath.AppendSlash() + "Email".AppendSlash();
+                    return true;
+                }
+                if( CreateFolder(dir, "Emails"))
+                {
+                    result.EmailFolderPath = result.ProjectPath.AppendSlash() + "Emails".AppendSlash();
+                    return true;
+                }
+            }
+            return false;    
+        }
+
+        private bool SetNewProject(FindResults results, string projectNumber)
+        {
+            projectNumber = projectNumber.Substring(0, 5);
+            var projNameDialog = new ProjectName();
+            var dialogResult = projNameDialog.ShowDialog();
+            string projName = null;
+            if (dialogResult == System.Windows.Forms.DialogResult.Cancel)
+                return false;
+            if (!string.IsNullOrEmpty(projNameDialog.tbProjectName.Text.Trim()))
+                projName = projNameDialog.tbProjectName.Text.Trim();                
+            projNameDialog.Dispose();
+            FillProjectDataForAll(results, projectNumber, projName);
+            return true;
+        }
+
+        private static void FillProjectDataForAll(FindResults results, string projectNumber, string projName)
+        {
+            results.Results.ForEach(r =>
+            {
+                if (r.FatalError)
+                    return;
+                var fullName = projectNumber;
+                var projNum = projectNumber;
+                switch (r.Type)
+                {
+                    case TargetType.Project:
+                        fullName = projNum + (string.IsNullOrEmpty(projName) ? "" : (" " + projName));
+                        break;
+                    case TargetType.Proposal:
+                    case TargetType.Marketing:
+                        projNum += "00";
+                        fullName = projNum + (string.IsNullOrEmpty(projName) ? "" : (" " + projName));
+                        break;
+
+                }
+                r.ProjectNumber = projNum;
+                r.ProjectName = fullName;
+                r.ProjectPath = r.ProjectPath.AppendSlash() + r.ProjectName.AppendSlash();
+            });
         }
 
         public FindResults Find(string number)
         {
-            if (string.IsNullOrEmpty(number) || number.Length < 5 || number.Length > 7)
+            if (string.IsNullOrEmpty(number) || (number.Length != 5 && number.Length != 7))
             {
-                MessageBox.Show("Project number must contain only digits and be at least 5 and at most 7 digits long.");
+                MessageBox.Show("Project number must contain only digits and be  5 or 7 digits long.");
                 return null;
             }
 
             long value;
             if (!long.TryParse(number, out value))
             {
-                MessageBox.Show("Project number must contain only digits and be at least 5 and at most 7 digits long.");
+                MessageBox.Show("Project number must contain only digits and be  5 or 7 digits long.");
                 return null;
             }
+            string projectTypePart = "00";
+            if (number.Length == 7)
+            {
+                projectTypePart = number.Substring(number.Length - 2, 2);
+                number = number.Substring(0, 5);
+            }
 
-            string yearPart = number.Substring(0, 2);
-            string projectTypePart = number.Substring(number.Length - 2, 2);
+            string yearPart = number.Substring(0, 2);            
             var results = new FindResults();
             GatherAllResults(number, yearPart, results);
             FillMissingProjectNames(results);
@@ -69,25 +138,27 @@ namespace ExportLogic
             var existing = results.Results.FirstOrDefault(r => r.Exists && !string.IsNullOrEmpty(r.ProjectName));
             if (existing == null)
                 return;
-            results.Results.ForEach(r =>
-            {
-                if (!r.Exists && r.NoAccess == false && string.IsNullOrEmpty(r.ProjectName))
-                {
-                    r.ProjectName = existing.ProjectName;
-                    r.ProjectPath = r.ProjectPath.AppendSlash() + r.ProjectName.AppendSlash();
-                }
-            });
+            var projNum = existing.ProjectNumber.Substring(0, 5);
+            FillProjectDataForAll(results, projNum, existing.ProjectName);
+            //results.Results.ForEach(r =>
+            //{
+            //    if (!r.Exists && r.NoAccess == false && string.IsNullOrEmpty(r.ProjectName))
+            //    {
+            //        r.ProjectName = existing.ProjectName;
+            //        r.ProjectPath = r.ProjectPath.AppendSlash() + r.ProjectName.AppendSlash();
+            //    }
+            //});
         }
 
         private void GatherAllResults(string number, string yearPart, FindResults results)
         {
-            var result = FindResult(settings.MarketingPath, yearPart, number);
+            var result = FindResult(settings.MarketingPath, yearPart, number +"00");
             result.Type = TargetType.Marketing;
             results.Results.Add(result);
             result = FindResult(settings.ProjectPath, yearPart, number);
             result.Type = TargetType.Project;
             results.Results.Add(result);
-            result = FindResult(settings.ProposalPath, yearPart, number);
+            result = FindResult(settings.ProposalPath, yearPart, number + "00");
             result.Type = TargetType.Proposal;
             results.Results.Add(result);
         }
@@ -97,11 +168,15 @@ namespace ExportLogic
             var originalRoot = rootPath;
             rootPath = rootPath.AppendSlash() + yearPart.AppendSlash();
             if (!Directory.Exists(rootPath))
-                return new SingleResult { Exists = false, NoAccess = true, FatalError = true, WarningMessage = "Folder for specified year: " + yearPart + " does not exist at all, please create it manually", ProjectPath = originalRoot };
+            {
+                rootPath = originalRoot.AppendSlash() + "20" + yearPart.AppendSlash();
+                if (!Directory.Exists(rootPath))
+                    return new SingleResult { Exists = false, NoAccess = true, FatalError = true, WarningMessage = "Folder for specified year: " + yearPart + " does not exist at all, please create it manually", ProjectPath = originalRoot };
+            }
 
             var dirs = Directory.GetDirectories(rootPath, projectNumber, SearchOption.TopDirectoryOnly);
             if(dirs.Length != 1)
-                dirs = Directory.GetDirectories(rootPath, projectNumber + " *", SearchOption.TopDirectoryOnly);
+                dirs = Directory.GetDirectories(rootPath, projectNumber + "*", SearchOption.TopDirectoryOnly);
             if (dirs.Length > 1)
             {
                 string message = "Found more then one folder in '" + rootPath + "' that matches project number: " + projectNumber + ". Export mail does not know what to do with that situation";
@@ -112,16 +187,14 @@ namespace ExportLogic
                 return new SingleResult { Exists = false, WarningMessage = "Main project's folder does not exist", ProjectPath = rootPath };
 
             DirectoryInfo dir = new DirectoryInfo(dirs[0]);
-
+            var match = nameRegex.Match(dir.Name);
+            var projName = match.Groups["name"].Value;
+            var projNumber = match.Groups["number"].Value;
             if (!HasWritePermissions(dir))
-                return new SingleResult { Exists = true, NoAccess = true, WarningMessage = "No write permissions to folder", ProjectName = dir.Name, ProjectPath = dir.FullName };
+                return new SingleResult { Exists = true, NoAccess = true, WarningMessage = "No write permissions to folder", ProjectName = projName, ProjectNumber = projNumber, ProjectPath = dir.FullName };
 
-            var result = new SingleResult { Exists = true, NoAccess = false, ProjectName = dir.Name, ProjectPath = dir.FullName };
-            if (!CreateFolder(dir, "Mail"))
-            {
-                result.NoAccess = true;
-                result.WarningMessage = "Could not create Mail folder for project";
-            }
+            var result = new SingleResult { Exists = true, NoAccess = false, ProjectName = projName, ProjectNumber = projNumber, ProjectPath = dir.FullName };
+            
             
             return result;
         }        
@@ -130,8 +203,7 @@ namespace ExportLogic
         {
             try
             {
-                var dirs = dir.GetDirectories(folderName, SearchOption.TopDirectoryOnly);
-                if (dirs.Length == 0)
+                if(!dir.ExistsSubFolder(folderName))                
                     dir.CreateSubdirectory(folderName);
                 return true;
             }
@@ -189,6 +261,11 @@ namespace ExportLogic
                 value += "\\";
             return value;
         }
+
+        public static bool ExistsSubFolder(this DirectoryInfo dir, string folderName)
+        {
+            return dir.GetDirectories(folderName, SearchOption.TopDirectoryOnly).Length > 0;
+        }
     }
 
     public class FindResults
@@ -212,11 +289,13 @@ namespace ExportLogic
     {
         public TargetType Type;
         public string ProjectName;
+        public string ProjectNumber;
         public string ProjectPath;
         public bool Exists;
         public bool NoAccess;
         public string WarningMessage;
         public bool FatalError;
+        public string EmailFolderPath;
 
     }
 }

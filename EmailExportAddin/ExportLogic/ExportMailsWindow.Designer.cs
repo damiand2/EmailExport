@@ -48,6 +48,7 @@
             this.gbExportHistory = new System.Windows.Forms.GroupBox();
             this.lbExportHistory = new System.Windows.Forms.ListBox();
             this.bExport = new System.Windows.Forms.Button();
+            this.lProjectName = new System.Windows.Forms.Label();
             this.gbAvailableLocations.SuspendLayout();
             this.gbExportHistory.SuspendLayout();
             this.SuspendLayout();
@@ -108,7 +109,7 @@
             this.bProjectView.Name = "bProjectView";
             this.bProjectView.Size = new System.Drawing.Size(75, 23);
             this.bProjectView.TabIndex = 15;
-            this.bProjectView.Text = "View";
+            this.bProjectView.Text = "Browse";
             this.bProjectView.UseVisualStyleBackColor = true;
             // 
             // bProjectExport
@@ -126,7 +127,7 @@
             this.bMarketingView.Name = "bMarketingView";
             this.bMarketingView.Size = new System.Drawing.Size(75, 23);
             this.bMarketingView.TabIndex = 13;
-            this.bMarketingView.Text = "View";
+            this.bMarketingView.Text = "Browse";
             this.bMarketingView.UseVisualStyleBackColor = true;
             // 
             // bMarketingExport
@@ -144,7 +145,7 @@
             this.bProposalView.Name = "bProposalView";
             this.bProposalView.Size = new System.Drawing.Size(75, 23);
             this.bProposalView.TabIndex = 11;
-            this.bProposalView.Text = "View";
+            this.bProposalView.Text = "Browse";
             this.bProposalView.UseVisualStyleBackColor = true;
             // 
             // bProposalExport
@@ -219,7 +220,7 @@
             // cbRemoveAfterExport
             // 
             this.cbRemoveAfterExport.AutoSize = true;
-            this.cbRemoveAfterExport.Location = new System.Drawing.Point(12, 396);
+            this.cbRemoveAfterExport.Location = new System.Drawing.Point(12, 426);
             this.cbRemoveAfterExport.Name = "cbRemoveAfterExport";
             this.cbRemoveAfterExport.Size = new System.Drawing.Size(122, 17);
             this.cbRemoveAfterExport.TabIndex = 4;
@@ -229,7 +230,7 @@
             // gbExportHistory
             // 
             this.gbExportHistory.Controls.Add(this.lbExportHistory);
-            this.gbExportHistory.Location = new System.Drawing.Point(12, 143);
+            this.gbExportHistory.Location = new System.Drawing.Point(12, 173);
             this.gbExportHistory.Name = "gbExportHistory";
             this.gbExportHistory.Size = new System.Drawing.Size(402, 241);
             this.gbExportHistory.TabIndex = 5;
@@ -248,7 +249,7 @@
             // 
             // bExport
             // 
-            this.bExport.Location = new System.Drawing.Point(337, 390);
+            this.bExport.Location = new System.Drawing.Point(337, 420);
             this.bExport.Name = "bExport";
             this.bExport.Size = new System.Drawing.Size(75, 23);
             this.bExport.TabIndex = 6;
@@ -256,11 +257,21 @@
             this.bExport.UseVisualStyleBackColor = true;
             this.bExport.Click += new System.EventHandler(this.bExport_Click);
             // 
+            // lProjectName
+            // 
+            this.lProjectName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lProjectName.Location = new System.Drawing.Point(15, 140);
+            this.lProjectName.Name = "lProjectName";
+            this.lProjectName.Size = new System.Drawing.Size(397, 30);
+            this.lProjectName.TabIndex = 7;
+            this.lProjectName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // ExportMailsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 425);
+            this.ClientSize = new System.Drawing.Size(424, 456);
+            this.Controls.Add(this.lProjectName);
             this.Controls.Add(this.bExport);
             this.Controls.Add(this.gbExportHistory);
             this.Controls.Add(this.cbRemoveAfterExport);
@@ -302,5 +313,6 @@
         private System.Windows.Forms.GroupBox gbExportHistory;
         private System.Windows.Forms.ListBox lbExportHistory;
         private System.Windows.Forms.Button bExport;
+        private System.Windows.Forms.Label lProjectName;
     }
 }

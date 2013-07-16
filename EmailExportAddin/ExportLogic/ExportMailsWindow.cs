@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,23 +40,41 @@ namespace ExportLogic
 
 			if (!result.Exists)//this is create workflow
 			{
-				new ExportTargetAccessor(settings).CreateProjectFolder(result);
-                RefreshResults();
+				new ExportTargetAccessor(settings).CreateProjectFolder(result, results, tbProjectNumber.Text.Trim());
+				RefreshResults();
 			}
 			else//export
 			{
-                PerformExport(result);
-            }			
+				PerformExport(result);
+			}			
 		}
 
 		void ViewClick(object sender, EventArgs e)
 		{
-			var result = ((Button)sender).Tag as SingleResult;
+			var button = (Button)sender;
+			string path = null;
+			var result = button.Tag as SingleResult;
 			if (result == null || string.IsNullOrEmpty(result.ProjectPath))
-				return;
+			{
+				if (button == bProjectView)
+					path = settings.ProjectPath;
+				if (button == bProposalView)
+					path = settings.ProposalPath;
+				if (button == bMarketingView)
+					path = settings.MarketingPath;
+				
+			}
+			else
+			{
+				path = result.ProjectPath;
+			}
+			
+			var dirInfo = new DirectoryInfo(path);
+			while (!dirInfo.Exists)
+				dirInfo = dirInfo.Parent;
 			var psi = new System.Diagnostics.ProcessStartInfo();
 			psi.UseShellExecute = true;
-			psi.FileName = result.ProjectPath;
+			psi.FileName = dirInfo.FullName;
 			System.Diagnostics.Process.Start(psi);
 		}
 
@@ -72,10 +91,18 @@ namespace ExportLogic
 			userSettings = settings.GetUserSettings();
 			cbRemoveAfterExport.Checked = userSettings.RemoveMailAfterExport;
 			lbExportHistory.DataSource = userSettings.MruItems;
-            lbExportHistory.SelectedIndex = -1;
+			lbExportHistory.SelectedIndex = -1;
 			settingUserSettings = false;
 		}
-		
+
+		private void tbProjectNumber_TextChanged(object sender, EventArgs e)
+		{
+			if (tbProjectNumber.Text == null)
+				return;
+			if(tbProjectNumber.Text.Length == 5 || tbProjectNumber.Text.Length == 7)
+				RefreshResults();
+		}
+
 		private void tbProjectNumber_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			if ((int)e.KeyChar == (int)System.Windows.Forms.Keys.Enter)
@@ -94,10 +121,7 @@ namespace ExportLogic
 			//}, tbProjectNumber.Text);
 		}
 
-		private void tbProjectNumber_TextChanged(object sender, EventArgs e)
-		{
-			
-		}
+		
 
 		private void SetUpResults()
 		{
@@ -106,12 +130,15 @@ namespace ExportLogic
 			BindResults();
 			if (!canProceed)
 				return;
-			if (!results.IsAtLeastOneValid())
-			{
-				SetNewProject(results);
-			}
-			SetExportOption(results.DefaultResult);
 			
+			SetExportOption(results.DefaultResult);
+			var result = results.Results.Find(r => r.Type == results.DefaultResult);
+			if (!result.Exists)
+				return;
+
+            lProjectName.Text = result.ProjectName;
+			if (tbProjectNumber.Text !=result.ProjectNumber)
+				tbProjectNumber.Text = result.ProjectNumber;
 		}
 
 		private void BindResults()
@@ -148,21 +175,7 @@ namespace ExportLogic
 				export.Text = "Export";
 		}
 
-		private void SetNewProject(FindResults results)
-		{
-			var projNameDialog = new ProjectName();
-			var dialogResult = projNameDialog.ShowDialog();
-			var projName = tbProjectNumber.Text.Trim();
-			if (dialogResult == System.Windows.Forms.DialogResult.OK)
-				projName += " " + projNameDialog.tbProjectName.Text.Trim();
-			results.Results.ForEach(r =>
-			{
-				if (r.FatalError)
-					return;
-				r.ProjectName = projName;
-				r.ProjectPath = r.ProjectPath.AppendSlash() + r.ProjectName.AppendSlash();
-			});
-		}
+		
 
 		private void SetExportOption(TargetType targetType)
 		{
@@ -181,9 +194,9 @@ namespace ExportLogic
 
 		private void EnableEverything(bool enabled)
 		{
-			gbAvailableLocations.Enabled = bExport.Enabled = cbRemoveAfterExport.Enabled =
+			bExport.Enabled = cbRemoveAfterExport.Enabled =
 			rbMarketing.Enabled = rbProject.Enabled = rbProposal.Enabled =
-			bProjectExport.Enabled = bProjectView.Enabled = bProposalExport.Enabled = bProposalExport.Enabled = bMarketingExport.Enabled = bMarketingView.Enabled = enabled;
+			bProjectExport.Enabled =  bProposalExport.Enabled = bMarketingExport.Enabled =  enabled;
 		}
 
 		private void tbProjectNumber_Validated(object sender, EventArgs e)
@@ -213,10 +226,7 @@ namespace ExportLogic
 				if (result == null || string.IsNullOrEmpty(result.ProjectPath) || result.FatalError)
 					return;
 
-				if (!result.Exists)//this is create workflow
-				{
-					new ExportTargetAccessor(settings).CreateProjectFolder(result);
-				}
+				new ExportTargetAccessor(settings).CreateProjectFolder(result, results, tbProjectNumber.Text.Trim());				
 				PerformExport(result);
 				Close();
 			}
@@ -229,6 +239,9 @@ namespace ExportLogic
 
 		private void PerformExport(SingleResult target)
 		{
+			//Emails subfolder might not exist yet
+			if (!new ExportTargetAccessor(settings).CreateProjectFolder(target, results, tbProjectNumber.Text.Trim()))
+				return;
 			WaitDialogWithWork dialog = new WaitDialogWithWork();
 			dialog.ShowWithWork(() =>
 			{
@@ -244,57 +257,57 @@ namespace ExportLogic
 					if (mail.HasAnyAttachment())
 						name += ("_" + settings.AttachmentsSuffix);
 					name +=".msg";
-                    try
-                    {
-                        mail.SaveAs(target.ProjectPath.AppendSlash() + "Mail".AppendSlash() + FileHelper.ConvertToValidFileName(name), OlSaveAsType.olMSGUnicode);
-                        if (cbRemoveAfterExport.Checked)
-                        {
-                            mail.Delete();
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        log4net.LogManager.GetLogger(typeof(ExportMailsWindow)).Error("Error wile saving mail:" + name, ex);
-                        MessageBox.Show("Error while saving mail " + mail.Subject + " to disk, operation will continue with other mails. Details:" + ex.Message);
-                    }
+					try
+					{
+						mail.SaveAs(target.EmailFolderPath.AppendSlash() + FileHelper.ConvertToValidFileName(name), OlSaveAsType.olMSGUnicode);
+						if (cbRemoveAfterExport.Checked)
+						{
+							mail.Delete();
+						}
+					}
+					catch (System.Exception ex)
+					{
+						log4net.LogManager.GetLogger(typeof(ExportMailsWindow)).Error("Error wile saving mail:" + name, ex);
+						MessageBox.Show("Error while saving mail " + mail.Subject + " to disk, operation will continue with other mails. Details:" + ex.Message);
+					}
 					
 					dialog.pbWork.PerformStep();
 				}
-                
+				
 				
 			}, false);
-            PersistSettings(target);
-            
-            Close();
+			PersistSettings(target);
+			
+			Close();
 		}
 
-        private void PersistSettings(SingleResult target)
-        {
-            MruItem item = new MruItem { ProjectNumber = tbProjectNumber.Text.Trim(), ProjectType = target.Type };
-            userSettings.MruItems.Remove(item);
-            userSettings.MruItems.Insert(0, item);
-            if (userSettings.MruItems.Count > 20)
-                userSettings.MruItems.RemoveRange(19, userSettings.MruItems.Count - 20);
-            userSettings.RemoveMailAfterExport = cbRemoveAfterExport.Checked;
-            settings.SetUserSettings(userSettings);
-        }
+		private void PersistSettings(SingleResult target)
+		{
+			MruItem item = new MruItem { ProjectNumber = target.ProjectNumber, ProjectType = target.Type, ProjectName = target.ProjectName };
+			userSettings.MruItems.Remove(item);
+			userSettings.MruItems.Insert(0, item);
+			if (userSettings.MruItems.Count > 20)
+				userSettings.MruItems.RemoveRange(19, userSettings.MruItems.Count - 20);
+			userSettings.RemoveMailAfterExport = cbRemoveAfterExport.Checked;
+			settings.SetUserSettings(userSettings);
+		}
 
 		private void lbExportHistory_SelectedIndexChanged(object sender, EventArgs e)
 		{
-            if (settingUserSettings)
-                return;
-            var item = (MruItem)lbExportHistory.SelectedItem;
-            tbProjectNumber.Text = item.ProjectNumber;
-            RefreshResults();
-            switch(item.ProjectType)
-            {
-                case TargetType.Marketing:
-                    rbMarketing.Checked = true; break;
-                case TargetType.Project:
-                    rbProject.Checked = true; break;
-                case TargetType.Proposal:
-                    rbProposal.Checked = true; break;
-            }
+			if (settingUserSettings)
+				return;
+			var item = (MruItem)lbExportHistory.SelectedItem;
+			tbProjectNumber.Text = item.ProjectNumber;
+			RefreshResults();
+			switch(item.ProjectType)
+			{
+				case TargetType.Marketing:
+					rbMarketing.Checked = true; break;
+				case TargetType.Project:
+					rbProject.Checked = true; break;
+				case TargetType.Proposal:
+					rbProposal.Checked = true; break;
+			}
 		}
 	}
 }

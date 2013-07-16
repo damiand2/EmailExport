@@ -99,10 +99,11 @@ namespace ExportLogic
     {
         public string ProjectNumber { get; set; }
         public TargetType ProjectType { get; set; }
+        public string ProjectName { get; set; }
 
         public override string ToString()
         {
-            return ProjectNumber + " - " + ProjectType;
+            return ProjectNumber + " "  + ProjectName + " - " + ProjectType;
         }
         public override bool Equals(object obj)
         {
