@@ -68,15 +68,20 @@ namespace ExportLogic
 			{
 				path = result.ProjectPath;
 			}
-			
-			var dirInfo = new DirectoryInfo(path);
-			while (!dirInfo.Exists)
-				dirInfo = dirInfo.Parent;
-			var psi = new System.Diagnostics.ProcessStartInfo();
-			psi.UseShellExecute = true;
-			psi.FileName = dirInfo.FullName;
-			System.Diagnostics.Process.Start(psi);
+
+            ShowFolderInExplorer(path);
 		}
+
+        private static void ShowFolderInExplorer(string path)
+        {
+            var dirInfo = new DirectoryInfo(path);
+            while (!dirInfo.Exists)
+                dirInfo = dirInfo.Parent;
+            var psi = new System.Diagnostics.ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = dirInfo.FullName;
+            System.Diagnostics.Process.Start(psi);
+        }
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -90,6 +95,7 @@ namespace ExportLogic
 			settingUserSettings = true;
 			userSettings = settings.GetUserSettings();
 			cbRemoveAfterExport.Checked = userSettings.RemoveMailAfterExport;
+            cbOpenFolderAfterExport.Checked = userSettings.OpenFolderAfterExport;
 			lbExportHistory.DataSource = userSettings.MruItems;
 			lbExportHistory.SelectedIndex = -1;
 			settingUserSettings = false;
@@ -97,8 +103,12 @@ namespace ExportLogic
 
 		private void tbProjectNumber_TextChanged(object sender, EventArgs e)
 		{
-			if (tbProjectNumber.Text == null)
-				return;
+            if (tbProjectNumber.Text == null || tbProjectNumber.Text.Length < 5)
+            {
+                results = null;
+                SetUpResults();
+                return;
+            }
 			if(tbProjectNumber.Text.Length == 5 || tbProjectNumber.Text.Length == 7)
 				RefreshResults();
 		}
@@ -125,6 +135,7 @@ namespace ExportLogic
 
 		private void SetUpResults()
 		{
+            lProjectName.Text = string.Empty;
 			var canProceed = results != null && !results.Results.All(r => r.FatalError);
 			EnableEverything(canProceed);
 			BindResults();
@@ -132,17 +143,18 @@ namespace ExportLogic
 				return;
 			
 			SetExportOption(results.DefaultResult);
-			var result = results.Results.Find(r => r.Type == results.DefaultResult);
-			if (!result.Exists)
+			var result = results.Results.Find(r => !string.IsNullOrEmpty(r.ProjectName));
+			if (result == null)
 				return;
 
             lProjectName.Text = result.ProjectName;
-			if (tbProjectNumber.Text !=result.ProjectNumber)
-				tbProjectNumber.Text = result.ProjectNumber;
+            //if (tbProjectNumber.Text !=result.ProjectNumber)
+            //    tbProjectNumber.Text = result.ProjectNumber;
 		}
 
 		private void BindResults()
 		{
+            lMarketingStatus.Text = lProjectStatus.Text = lProposalStatus.Text = string.Empty;
 			if (results == null)
 				return;
 			foreach (var result in results.Results)
@@ -194,7 +206,7 @@ namespace ExportLogic
 
 		private void EnableEverything(bool enabled)
 		{
-			bExport.Enabled = cbRemoveAfterExport.Enabled =
+			bExport.Enabled = cbRemoveAfterExport.Enabled = cbOpenFolderAfterExport.Enabled =
 			rbMarketing.Enabled = rbProject.Enabled = rbProposal.Enabled =
 			bProjectExport.Enabled =  bProposalExport.Enabled = bMarketingExport.Enabled =  enabled;
 		}
@@ -253,9 +265,9 @@ namespace ExportLogic
 					MailItem mail = Mails[i];
 					string name = mail.Subject;
 					if (mail.Sent)
-						name = mail.SentOn.ToString("s") + "_" + mail.SenderName + "_" + mail.Subject;
+						name = mail.SentOn.ToString("yyyy-MM-dd hh-mm-ss") + " " + mail.SenderName + " " + mail.Subject;
 					if (mail.HasAnyAttachment())
-						name += ("_" + settings.AttachmentsSuffix);
+						name += (" " + settings.AttachmentsSuffix);
 					name +=".msg";
 					try
 					{
@@ -277,9 +289,12 @@ namespace ExportLogic
 				
 			}, false);
 			PersistSettings(target);
-			
+            if (cbOpenFolderAfterExport.Checked)
+                ShowFolderInExplorer(target.EmailFolderPath);
 			Close();
 		}
+
+        
 
 		private void PersistSettings(SingleResult target)
 		{
@@ -289,6 +304,7 @@ namespace ExportLogic
 			if (userSettings.MruItems.Count > 20)
 				userSettings.MruItems.RemoveRange(19, userSettings.MruItems.Count - 20);
 			userSettings.RemoveMailAfterExport = cbRemoveAfterExport.Checked;
+            userSettings.OpenFolderAfterExport = cbOpenFolderAfterExport.Checked;
 			settings.SetUserSettings(userSettings);
 		}
 

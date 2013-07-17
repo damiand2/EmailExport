@@ -56,12 +56,7 @@ namespace ExportLogic
             foreach (var c in fileName)
             {
                 if (Char.IsControl(c)) continue;
-                if (c == '~') continue;
-                if (c == '#') continue;
-                if (c == '%') continue;
-                if (c == '&') continue;
-                if (c == '{') continue;
-                if (c == '}') continue;
+                if (c == '~') continue;  
                 if (c == ';') continue;
                 finalChars.Add(c);
             }

@@ -49,6 +49,7 @@
             this.lbExportHistory = new System.Windows.Forms.ListBox();
             this.bExport = new System.Windows.Forms.Button();
             this.lProjectName = new System.Windows.Forms.Label();
+            this.cbOpenFolderAfterExport = new System.Windows.Forms.CheckBox();
             this.gbAvailableLocations.SuspendLayout();
             this.gbExportHistory.SuspendLayout();
             this.SuspendLayout();
@@ -266,11 +267,22 @@
             this.lProjectName.TabIndex = 7;
             this.lProjectName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // cbOpenFolderAfterExport
+            // 
+            this.cbOpenFolderAfterExport.AutoSize = true;
+            this.cbOpenFolderAfterExport.Location = new System.Drawing.Point(167, 426);
+            this.cbOpenFolderAfterExport.Name = "cbOpenFolderAfterExport";
+            this.cbOpenFolderAfterExport.Size = new System.Drawing.Size(141, 17);
+            this.cbOpenFolderAfterExport.TabIndex = 8;
+            this.cbOpenFolderAfterExport.Text = "Open Folder after Export";
+            this.cbOpenFolderAfterExport.UseVisualStyleBackColor = true;
+            // 
             // ExportMailsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(424, 456);
+            this.Controls.Add(this.cbOpenFolderAfterExport);
             this.Controls.Add(this.lProjectName);
             this.Controls.Add(this.bExport);
             this.Controls.Add(this.gbExportHistory);
@@ -314,5 +326,6 @@
         private System.Windows.Forms.ListBox lbExportHistory;
         private System.Windows.Forms.Button bExport;
         private System.Windows.Forms.Label lProjectName;
+        private System.Windows.Forms.CheckBox cbOpenFolderAfterExport;
     }
 }

@@ -29,7 +29,7 @@ namespace ExportLogic
             if (!allResults.IsAtLeastOneValid())
             {
                 if (!SetNewProject(allResults, projectNumber))
-                    return;
+                    return false;
                 
             }
             var dir = new DirectoryInfo(result.ProjectPath);
@@ -64,7 +64,9 @@ namespace ExportLogic
             if (dialogResult == System.Windows.Forms.DialogResult.Cancel)
                 return false;
             if (!string.IsNullOrEmpty(projNameDialog.tbProjectName.Text.Trim()))
-                projName = projNameDialog.tbProjectName.Text.Trim();                
+                projName = projNameDialog.tbProjectName.Text.Trim();
+            if (!projName.StartsWith("("))
+                projName = "(" + projName + ")";
             projNameDialog.Dispose();
             FillProjectDataForAll(results, projectNumber, projName);
             return true;
@@ -76,23 +78,26 @@ namespace ExportLogic
             {
                 if (r.FatalError)
                     return;
-                var fullName = projectNumber;
-                var projNum = projectNumber;
-                switch (r.Type)
+                if (!r.Exists && r.NoAccess == false && string.IsNullOrEmpty(r.ProjectName))
                 {
-                    case TargetType.Project:
-                        fullName = projNum + (string.IsNullOrEmpty(projName) ? "" : (" " + projName));
-                        break;
-                    case TargetType.Proposal:
-                    case TargetType.Marketing:
-                        projNum += "00";
-                        fullName = projNum + (string.IsNullOrEmpty(projName) ? "" : (" " + projName));
-                        break;
+                    var fullName = projectNumber;
+                    var projNum = projectNumber;
+                    switch (r.Type)
+                    {
+                        case TargetType.Project:
+                            fullName = projNum + (string.IsNullOrEmpty(projName) ? "" : (" " + projName));
+                            break;
+                        case TargetType.Proposal:
+                        case TargetType.Marketing:
+                            projNum += "00";
+                            fullName = projNum + (string.IsNullOrEmpty(projName) ? "" : (" " + projName));
+                            break;
 
+                    }
+                    r.ProjectNumber = projNum;
+                    r.ProjectName = projName;
+                    r.ProjectPath = r.ProjectPath.AppendSlash() + fullName.AppendSlash();
                 }
-                r.ProjectNumber = projNum;
-                r.ProjectName = fullName;
-                r.ProjectPath = r.ProjectPath.AppendSlash() + r.ProjectName.AppendSlash();
             });
         }
 
@@ -121,14 +126,21 @@ namespace ExportLogic
             var results = new FindResults();
             GatherAllResults(number, yearPart, results);
             FillMissingProjectNames(results);
-            switch (projectTypePart)
+            if (number.Length == 5 && results.Results.Find(r=> r.Type == TargetType.Project).Exists)
             {
-                case "00": results.DefaultResult = TargetType.Proposal;
-                    break;
-                case "01": results.DefaultResult = TargetType.Project;
-                    break;
-                default: results.DefaultResult = TargetType.Marketing;
-                    break;
+                results.DefaultResult = TargetType.Project;
+            }
+            else
+            {                
+                switch (projectTypePart)
+                {
+                    case "00": results.DefaultResult = TargetType.Proposal;
+                        break;
+                    case "01": results.DefaultResult = TargetType.Project;
+                        break;
+                    default: results.DefaultResult = TargetType.Project;
+                        break;
+                }
             }
             return results;
         }

@@ -120,7 +120,13 @@ namespace ExportLogic
     }
     public class UserSettings
     {
+        public UserSettings()
+        {
+            OpenFolderAfterExport = true;
+        }
         public List<MruItem> MruItems { get; set; }
         public bool RemoveMailAfterExport { get; set; }
+
+        public bool OpenFolderAfterExport { get; set; }
     }
 }
