@@ -252,58 +252,67 @@ namespace ExportLogic
 
 		private void PerformExport(SingleResult target)
 		{
-			//if (string.IsNullOrEmpty(target.EmailFolderPath))
-			//    target.EmailFolderPath = target.ProjectPath.AppendSlash() + "Emails".AppendSlash();
-			var confirmationWindow = new ExportConfirmationWindow { MailCount = Mails.Length, Target = target };
-			confirmationWindow.cbRemoveAfterExport.Checked = userSettings.RemoveMailAfterExport;
-			confirmationWindow.cbOpenFolderAfterExport.Checked = userSettings.OpenFolderAfterExport;
-			var dialogResult = confirmationWindow.ShowDialog();
-			userSettings.RemoveMailAfterExport = confirmationWindow.cbRemoveAfterExport.Checked ;
-			userSettings.OpenFolderAfterExport = confirmationWindow.cbOpenFolderAfterExport.Checked;
-			confirmationWindow.Dispose();
-			if (dialogResult == System.Windows.Forms.DialogResult.Cancel)
-				return;
-			//Emails subfolder might not exist yet
-			if (!new ExportTargetAccessor(settings).CreateProjectFolder(target, results, tbProjectNumber.Text.Trim()))
-				return;
-			WaitDialogWithWork dialog = new WaitDialogWithWork();
-			dialog.ShowWithWork(() =>
+			try
 			{
-				for (int i = 0; i < Mails.Length; i++)
+				//if (string.IsNullOrEmpty(target.EmailFolderPath))
+				//    target.EmailFolderPath = target.ProjectPath.AppendSlash() + "Emails".AppendSlash();
+				var confirmationWindow = new ExportConfirmationWindow { MailCount = Mails.Length, Target = target };
+				confirmationWindow.cbRemoveAfterExport.Checked = userSettings.RemoveMailAfterExport;
+				confirmationWindow.cbOpenFolderAfterExport.Checked = userSettings.OpenFolderAfterExport;
+				var dialogResult = confirmationWindow.ShowDialog();
+				userSettings.RemoveMailAfterExport = confirmationWindow.cbRemoveAfterExport.Checked;
+				userSettings.OpenFolderAfterExport = confirmationWindow.cbOpenFolderAfterExport.Checked;
+				confirmationWindow.Dispose();
+				if (dialogResult == System.Windows.Forms.DialogResult.Cancel)
+					return;
+				//Emails subfolder might not exist yet
+				if (!new ExportTargetAccessor(settings).CreateProjectFolder(target, results, tbProjectNumber.Text.Trim()))
+					return;
+				WaitDialogWithWork dialog = new WaitDialogWithWork();
+				dialog.ShowWithWork(() =>
 				{
+					for (int i = 0; i < Mails.Length; i++)
+					{
 
-					dialog.pbWork.Step = 100 / Mails.Length;
-					dialog.ShowMessage("Exporting mail " + (i + 1) + " of " + Mails.Length + ". Please wait...");
-					MailItem mail = Mails[i];
-					string name = mail.Subject;
-					if (mail.Sent)
-						name = mail.SentOn.ToString("yyyy-MM-dd hh-mm-ss") + " " + mail.SenderName + " " + mail.Subject;
-					if (mail.HasAnyAttachment())
-						name += (" " + settings.AttachmentsSuffix);
-					name +=".msg";
-					try
-					{
-						mail.SaveAs(target.EmailFolderPath.AppendSlash() + FileHelper.ConvertToValidFileName(name), OlSaveAsType.olMSGUnicode);
-						if (userSettings.RemoveMailAfterExport)
+						dialog.pbWork.Step = 100 / Mails.Length;
+						dialog.ShowMessage("Exporting mail " + (i + 1) + " of " + Mails.Length + ". Please wait...");
+						MailItem mail = Mails[i];
+						string name = mail.Subject;
+						if (mail.Sent)
+							name = mail.SentOn.ToString("yyyy-MM-dd hh-mm-ss") + " " + mail.SenderName + " " + mail.Subject;
+						if (mail.HasAnyAttachment())
+							name += (" " + settings.AttachmentsSuffix);
+						name += ".msg";
+						try
 						{
-							mail.Delete();
+							mail.SaveAs(target.EmailFolderPath.AppendSlash() + FileHelper.ConvertToValidFileName(name), OlSaveAsType.olMSGUnicode);
+							if (userSettings.RemoveMailAfterExport)
+							{
+								mail.Delete();
+							}
 						}
+						catch (System.Exception ex)
+						{
+							log4net.LogManager.GetLogger(typeof(ExportMailsWindow)).Error("Error while saving mail:" + name, ex);
+							MessageBox.Show("Error while saving mail " + mail.Subject + " to disk, operation will continue with other mails. Details:" + ex.Message);
+						}
+
+						dialog.pbWork.PerformStep();
 					}
-					catch (System.Exception ex)
-					{
-						log4net.LogManager.GetLogger(typeof(ExportMailsWindow)).Error("Error wile saving mail:" + name, ex);
-						MessageBox.Show("Error while saving mail " + mail.Subject + " to disk, operation will continue with other mails. Details:" + ex.Message);
-					}
-					
-					dialog.pbWork.PerformStep();
-				}
-				
-				
-			}, false);
-			PersistSettings(target);
-			if (userSettings.OpenFolderAfterExport)
-				ShowFolderInExplorer(target.EmailFolderPath);
-			Close();
+
+
+				}, false);
+				PersistSettings(target);
+				if (userSettings.OpenFolderAfterExport)
+					ShowFolderInExplorer(target.EmailFolderPath);
+				Close();
+			}
+			catch (System.Exception ex)
+			{
+				log4net.LogManager.GetLogger(typeof(ExportMailsWindow)).Error("Error while performing export operation.", ex);
+				MessageBox.Show("Error while performing export operation. All info will be saved to log file for future bugfixing. Details:" + ex.Message);
+			}
+			
 		}
 
 		

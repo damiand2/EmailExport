@@ -104,7 +104,8 @@
             this.gbDirectories.Size = new System.Drawing.Size(426, 141);
             this.gbDirectories.TabIndex = 12;
             this.gbDirectories.TabStop = false;
-            this.gbDirectories.Text = "Click below for subfolder export";
+            this.gbDirectories.Text = "Click below for subfolder export (CTRL + click to unselect and export to main fol" +
+    "der)";
             // 
             // lbDirectories
             // 
@@ -115,6 +116,8 @@
             this.lbDirectories.Size = new System.Drawing.Size(420, 122);
             this.lbDirectories.Sorted = true;
             this.lbDirectories.TabIndex = 0;
+            this.lbDirectories.Click += new System.EventHandler(this.lbDirectories_Click);           
+            this.lbDirectories.SelectedIndexChanged += new System.EventHandler(this.lbDirectories_SelectedIndexChanged);
             // 
             // ExportConfirmationWindow
             // 

@@ -22,8 +22,8 @@ namespace ExportLogic
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            lMessage.Text = string.Format("{0} message(s) will be exported to {1} {2} - {3}. \r\nDo you want to continue?", MailCount, Target.ProjectNumber, Target.ProjectName, Target.Type);
-            lProjectName.Text = Target.ProjectName;
+            lMessage.Text = string.Format("{0} message(s) will be exported to {1} Folder. \r\nDo you want to continue?", MailCount, Target.Type);
+            lProjectName.Text = Target.ProjectNumber + " " + Target.ProjectName;
             LoadDirectories();
         }
 
@@ -34,11 +34,16 @@ namespace ExportLogic
                 dir = new DirectoryInfo(Target.EmailFolderPath).Parent;
             else
                 dir = new DirectoryInfo(Target.ProjectPath);
-            var dirs = dir.GetDirectories();
+            var dirs = new List<DirectoryInfo>(dir.GetDirectories());
+            for (int i = dirs.Count -1 ; i >= 0; i--)
+            {
+                if (dirs[i].Name.Equals("Email", StringComparison.OrdinalIgnoreCase)
+                    || dirs[i].Name.Equals("Emails", StringComparison.OrdinalIgnoreCase))
+                    dirs.RemoveAt(i);
+            }
             lbDirectories.DisplayMember = "Name";
-            lbDirectories.DataSource = dirs;    
-            var dirName = new DirectoryInfo(Target.EmailFolderPath).Name;
-            lbDirectories.SelectedItem = dirs.Where(d => string.Equals(d.Name, dirName, StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
+            lbDirectories.DataSource = dirs;               
+            lbDirectories.SelectedIndex = -1;
 
         }
 
@@ -59,5 +64,21 @@ namespace ExportLogic
             DialogResult = System.Windows.Forms.DialogResult.Cancel;
             Close();
         }
+
+        private void lbDirectories_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbDirectories.SelectedIndex == -1)
+                lProjectName.Text = Target.ProjectNumber + " " + Target.ProjectName;
+            else
+                lProjectName.Text = Target.ProjectNumber + " " + Target.ProjectName +" - " + ((DirectoryInfo)lbDirectories.SelectedItem).Name;
+        }
+
+        private void lbDirectories_Click(object sender, EventArgs e)
+        {
+            if (Control.ModifierKeys.HasFlag(Keys.Control))
+                lbDirectories.ClearSelected();
+        }
+
+       
     }
 }
