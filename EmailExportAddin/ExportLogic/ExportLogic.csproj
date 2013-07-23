@@ -54,6 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExportConfirmationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportConfirmationWindow.Designer.cs">
+      <DependentUpon>ExportConfirmationWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileHelper.cs" />
     <Compile Include="OutlookExtensions.cs" />
     <Compile Include="ExportMailsCommand.cs" />
@@ -80,6 +86,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ExportConfirmationWindow.resx">
+      <DependentUpon>ExportConfirmationWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExportMailsWindow.resx">
       <DependentUpon>ExportMailsWindow.cs</DependentUpon>
     </EmbeddedResource>

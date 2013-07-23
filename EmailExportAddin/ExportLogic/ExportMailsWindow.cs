@@ -69,19 +69,19 @@ namespace ExportLogic
 				path = result.ProjectPath;
 			}
 
-            ShowFolderInExplorer(path);
+			ShowFolderInExplorer(path);
 		}
 
-        private static void ShowFolderInExplorer(string path)
-        {
-            var dirInfo = new DirectoryInfo(path);
-            while (!dirInfo.Exists)
-                dirInfo = dirInfo.Parent;
-            var psi = new System.Diagnostics.ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = dirInfo.FullName;
-            System.Diagnostics.Process.Start(psi);
-        }
+		private static void ShowFolderInExplorer(string path)
+		{
+			var dirInfo = new DirectoryInfo(path);
+			while (!dirInfo.Exists)
+				dirInfo = dirInfo.Parent;
+			var psi = new System.Diagnostics.ProcessStartInfo();
+			psi.UseShellExecute = true;
+			psi.FileName = dirInfo.FullName;
+			System.Diagnostics.Process.Start(psi);
+		}
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -93,9 +93,7 @@ namespace ExportLogic
 		private void RestoreUserSettings()
 		{
 			settingUserSettings = true;
-			userSettings = settings.GetUserSettings();
-			cbRemoveAfterExport.Checked = userSettings.RemoveMailAfterExport;
-            cbOpenFolderAfterExport.Checked = userSettings.OpenFolderAfterExport;
+			userSettings = settings.GetUserSettings();			
 			lbExportHistory.DataSource = userSettings.MruItems;
 			lbExportHistory.SelectedIndex = -1;
 			settingUserSettings = false;
@@ -103,12 +101,12 @@ namespace ExportLogic
 
 		private void tbProjectNumber_TextChanged(object sender, EventArgs e)
 		{
-            if (tbProjectNumber.Text == null || tbProjectNumber.Text.Length < 5)
-            {
-                results = null;
-                SetUpResults();
-                return;
-            }
+			if (tbProjectNumber.Text == null || tbProjectNumber.Text.Length < 5)
+			{
+				results = null;
+				SetUpResults();
+				return;
+			}
 			if(tbProjectNumber.Text.Length == 5 || tbProjectNumber.Text.Length == 7)
 				RefreshResults();
 		}
@@ -131,30 +129,33 @@ namespace ExportLogic
 			//}, tbProjectNumber.Text);
 		}
 
-		
+
 
 		private void SetUpResults()
 		{
-            lProjectName.Text = string.Empty;
+
+			lProjectName.Text = "Please enter Project Number";
+			if (tbProjectNumber.Text != null && tbProjectNumber.Text.Length > 4)
+				lProjectName.Text = "Project Number not Found";
 			var canProceed = results != null && !results.Results.All(r => r.FatalError);
 			EnableEverything(canProceed);
 			BindResults();
 			if (!canProceed)
 				return;
-			
+
 			SetExportOption(results.DefaultResult);
 			var result = results.Results.Find(r => !string.IsNullOrEmpty(r.ProjectName));
 			if (result == null)
 				return;
 
-            lProjectName.Text = result.ProjectName;
-            //if (tbProjectNumber.Text !=result.ProjectNumber)
-            //    tbProjectNumber.Text = result.ProjectNumber;
+			lProjectName.Text = result.ProjectName;
+			//if (tbProjectNumber.Text !=result.ProjectNumber)
+			//    tbProjectNumber.Text = result.ProjectNumber;
 		}
 
 		private void BindResults()
 		{
-            lMarketingStatus.Text = lProjectStatus.Text = lProposalStatus.Text = string.Empty;
+			lMarketingStatus.Text = lProjectStatus.Text = lProposalStatus.Text = string.Empty;
 			if (results == null)
 				return;
 			foreach (var result in results.Results)
@@ -206,7 +207,7 @@ namespace ExportLogic
 
 		private void EnableEverything(bool enabled)
 		{
-			bExport.Enabled = cbRemoveAfterExport.Enabled = cbOpenFolderAfterExport.Enabled =
+			bExport.Enabled = 
 			rbMarketing.Enabled = rbProject.Enabled = rbProposal.Enabled =
 			bProjectExport.Enabled =  bProposalExport.Enabled = bMarketingExport.Enabled =  enabled;
 		}
@@ -251,6 +252,17 @@ namespace ExportLogic
 
 		private void PerformExport(SingleResult target)
 		{
+			//if (string.IsNullOrEmpty(target.EmailFolderPath))
+			//    target.EmailFolderPath = target.ProjectPath.AppendSlash() + "Emails".AppendSlash();
+			var confirmationWindow = new ExportConfirmationWindow { MailCount = Mails.Length, Target = target };
+			confirmationWindow.cbRemoveAfterExport.Checked = userSettings.RemoveMailAfterExport;
+			confirmationWindow.cbOpenFolderAfterExport.Checked = userSettings.OpenFolderAfterExport;
+			var dialogResult = confirmationWindow.ShowDialog();
+			userSettings.RemoveMailAfterExport = confirmationWindow.cbRemoveAfterExport.Checked ;
+			userSettings.OpenFolderAfterExport = confirmationWindow.cbOpenFolderAfterExport.Checked;
+			confirmationWindow.Dispose();
+			if (dialogResult == System.Windows.Forms.DialogResult.Cancel)
+				return;
 			//Emails subfolder might not exist yet
 			if (!new ExportTargetAccessor(settings).CreateProjectFolder(target, results, tbProjectNumber.Text.Trim()))
 				return;
@@ -272,7 +284,7 @@ namespace ExportLogic
 					try
 					{
 						mail.SaveAs(target.EmailFolderPath.AppendSlash() + FileHelper.ConvertToValidFileName(name), OlSaveAsType.olMSGUnicode);
-						if (cbRemoveAfterExport.Checked)
+						if (userSettings.RemoveMailAfterExport)
 						{
 							mail.Delete();
 						}
@@ -289,12 +301,12 @@ namespace ExportLogic
 				
 			}, false);
 			PersistSettings(target);
-            if (cbOpenFolderAfterExport.Checked)
-                ShowFolderInExplorer(target.EmailFolderPath);
+			if (userSettings.OpenFolderAfterExport)
+				ShowFolderInExplorer(target.EmailFolderPath);
 			Close();
 		}
 
-        
+		
 
 		private void PersistSettings(SingleResult target)
 		{
@@ -302,9 +314,7 @@ namespace ExportLogic
 			userSettings.MruItems.Remove(item);
 			userSettings.MruItems.Insert(0, item);
 			if (userSettings.MruItems.Count > 20)
-				userSettings.MruItems.RemoveRange(19, userSettings.MruItems.Count - 20);
-			userSettings.RemoveMailAfterExport = cbRemoveAfterExport.Checked;
-            userSettings.OpenFolderAfterExport = cbOpenFolderAfterExport.Checked;
+				userSettings.MruItems.RemoveRange(19, userSettings.MruItems.Count - 20);			
 			settings.SetUserSettings(userSettings);
 		}
 
@@ -324,6 +334,9 @@ namespace ExportLogic
 				case TargetType.Proposal:
 					rbProposal.Checked = true; break;
 			}
+			settingUserSettings = true;
+			lbExportHistory.SelectedIndex = -1;
+			settingUserSettings = false;
 		}
 	}
 }

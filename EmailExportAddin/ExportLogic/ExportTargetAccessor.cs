@@ -25,6 +25,9 @@ namespace ExportLogic
         {
             if (result == null || string.IsNullOrEmpty(result.ProjectPath))
                 return false;
+
+            if (!string.IsNullOrEmpty(result.EmailFolderPath) && Directory.Exists(result.EmailFolderPath))
+                return true;//folder already exists and was selected by user, nothing to do here
                         
             if (!allResults.IsAtLeastOneValid())
             {
@@ -32,7 +35,15 @@ namespace ExportLogic
                     return false;
                 
             }
+
+            
             var dir = new DirectoryInfo(result.ProjectPath);
+            if (!dir.Exists)
+            {
+                var dialogResult = MessageBox.Show(string.Format("Do you want to create new folder {0} {1} - {2} ?", result.ProjectNumber, result.ProjectName, result.Type), "Create new folder?", MessageBoxButtons.OKCancel);
+                if (dialogResult == DialogResult.Cancel)
+                    return false;
+            }
             if (CreateFolder(dir.Parent, dir.Name))
             {
                 if (dir.ExistsSubFolder("Emails"))
