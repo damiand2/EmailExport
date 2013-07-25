@@ -36,6 +36,7 @@
             this.lProjectName = new System.Windows.Forms.Label();
             this.gbDirectories = new System.Windows.Forms.GroupBox();
             this.lbDirectories = new System.Windows.Forms.ListBox();
+            this.ceSubfolderExport = new System.Windows.Forms.CheckBox();
             this.gbDirectories.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +50,8 @@
             // 
             // bOk
             // 
-            this.bOk.Location = new System.Drawing.Point(276, 244);
+            this.bOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bOk.Location = new System.Drawing.Point(276, 262);
             this.bOk.Name = "bOk";
             this.bOk.Size = new System.Drawing.Size(75, 23);
             this.bOk.TabIndex = 1;
@@ -59,8 +61,9 @@
             // 
             // bCancel
             // 
+            this.bCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bCancel.Location = new System.Drawing.Point(363, 244);
+            this.bCancel.Location = new System.Drawing.Point(363, 262);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(75, 23);
             this.bCancel.TabIndex = 2;
@@ -70,8 +73,9 @@
             // 
             // cbOpenFolderAfterExport
             // 
+            this.cbOpenFolderAfterExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbOpenFolderAfterExport.AutoSize = true;
-            this.cbOpenFolderAfterExport.Location = new System.Drawing.Point(12, 246);
+            this.cbOpenFolderAfterExport.Location = new System.Drawing.Point(12, 268);
             this.cbOpenFolderAfterExport.Name = "cbOpenFolderAfterExport";
             this.cbOpenFolderAfterExport.Size = new System.Drawing.Size(141, 17);
             this.cbOpenFolderAfterExport.TabIndex = 10;
@@ -80,8 +84,9 @@
             // 
             // cbRemoveAfterExport
             // 
+            this.cbRemoveAfterExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbRemoveAfterExport.AutoSize = true;
-            this.cbRemoveAfterExport.Location = new System.Drawing.Point(12, 223);
+            this.cbRemoveAfterExport.Location = new System.Drawing.Point(12, 245);
             this.cbRemoveAfterExport.Name = "cbRemoveAfterExport";
             this.cbRemoveAfterExport.Size = new System.Drawing.Size(122, 17);
             this.cbRemoveAfterExport.TabIndex = 9;
@@ -99,7 +104,7 @@
             // gbDirectories
             // 
             this.gbDirectories.Controls.Add(this.lbDirectories);
-            this.gbDirectories.Location = new System.Drawing.Point(12, 76);
+            this.gbDirectories.Location = new System.Drawing.Point(12, 100);
             this.gbDirectories.Name = "gbDirectories";
             this.gbDirectories.Size = new System.Drawing.Size(426, 141);
             this.gbDirectories.TabIndex = 12;
@@ -116,8 +121,19 @@
             this.lbDirectories.Size = new System.Drawing.Size(420, 122);
             this.lbDirectories.Sorted = true;
             this.lbDirectories.TabIndex = 0;
-            this.lbDirectories.Click += new System.EventHandler(this.lbDirectories_Click);           
+            this.lbDirectories.Click += new System.EventHandler(this.lbDirectories_Click);
             this.lbDirectories.SelectedIndexChanged += new System.EventHandler(this.lbDirectories_SelectedIndexChanged);
+            // 
+            // ceSubfolderExport
+            // 
+            this.ceSubfolderExport.AutoSize = true;
+            this.ceSubfolderExport.Location = new System.Drawing.Point(12, 77);
+            this.ceSubfolderExport.Name = "ceSubfolderExport";
+            this.ceSubfolderExport.Size = new System.Drawing.Size(103, 17);
+            this.ceSubfolderExport.TabIndex = 13;
+            this.ceSubfolderExport.Text = "Subfolder export";
+            this.ceSubfolderExport.UseVisualStyleBackColor = true;
+            this.ceSubfolderExport.CheckedChanged += new System.EventHandler(this.ceSubfolderExport_CheckedChanged);
             // 
             // ExportConfirmationWindow
             // 
@@ -125,7 +141,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.bCancel;
-            this.ClientSize = new System.Drawing.Size(450, 273);
+            this.ClientSize = new System.Drawing.Size(450, 292);
+            this.Controls.Add(this.ceSubfolderExport);
             this.Controls.Add(this.gbDirectories);
             this.Controls.Add(this.lProjectName);
             this.Controls.Add(this.cbOpenFolderAfterExport);
@@ -153,5 +170,6 @@
         private System.Windows.Forms.Label lProjectName;
         private System.Windows.Forms.GroupBox gbDirectories;
         private System.Windows.Forms.ListBox lbDirectories;
+        public System.Windows.Forms.CheckBox ceSubfolderExport;
     }
 }

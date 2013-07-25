@@ -15,6 +15,7 @@ namespace ExportLogic
         public ExportConfirmationWindow()
         {
             InitializeComponent();
+            ToggleSubfolderExport();
         }
 
         public int MailCount;
@@ -49,12 +50,17 @@ namespace ExportLogic
 
         private void bOk_Click(object sender, EventArgs e)
         {
+            if (ceSubfolderExport.Checked && lbDirectories.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select subfolder for export. If you want to export to main folder, uncheck 'Subfolder export' checkbox");
+                return;
+            }
             DialogResult = System.Windows.Forms.DialogResult.OK;
-            var dir = (DirectoryInfo)lbDirectories.SelectedItem;
-            if(dir.Name.Equals("Email", StringComparison.OrdinalIgnoreCase) || dir.Name.Equals("Emails", StringComparison.OrdinalIgnoreCase))
-                Target.EmailFolderPath = dir.FullName;
-            else
+            if (ceSubfolderExport.Checked)
+            {
+                var dir = (DirectoryInfo)lbDirectories.SelectedItem;
                 Target.ProjectPath = dir.FullName;
+            }
             Close();
 
         }
@@ -77,6 +83,26 @@ namespace ExportLogic
         {
             if (Control.ModifierKeys.HasFlag(Keys.Control))
                 lbDirectories.ClearSelected();
+        }
+
+        private void ceSubfolderExport_CheckedChanged(object sender, EventArgs e)
+        {
+            ToggleSubfolderExport();
+        }
+
+        private void ToggleSubfolderExport()
+        {
+            if (ceSubfolderExport.Checked)
+            {
+                gbDirectories.Visible = true;
+                this.Height = this.Height + 141;
+            }
+            else
+            {
+                lbDirectories.ClearSelected();
+                gbDirectories.Visible = false;
+                this.Height = this.Height - 141;
+            }
         }
 
        
