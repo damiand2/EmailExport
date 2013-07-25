@@ -100,17 +100,23 @@ namespace ExportLogic
         public string ProjectNumber { get; set; }
         public TargetType ProjectType { get; set; }
         public string ProjectName { get; set; }
+        public string SubFolder { get; set; }
 
         public override string ToString()
         {
-            return ProjectNumber + " "  + ProjectName + " - " + ProjectType;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ProjectNumber).Append(" ").Append(ProjectName);
+            if (!string.IsNullOrEmpty(SubFolder))
+                sb.Append(" - ").Append(SubFolder);
+            sb.Append(" - ").Append(ProjectType);
+            return sb.ToString();
         }
         public override bool Equals(object obj)
         {
             MruItem mi = obj as MruItem;
             if (mi == null)
                 return false;
-            return mi.ProjectNumber == ProjectNumber && mi.ProjectType == ProjectType;
+            return mi.ProjectNumber == ProjectNumber && mi.ProjectType == ProjectType && mi.SubFolder == SubFolder;
         }
 
         public override int GetHashCode()

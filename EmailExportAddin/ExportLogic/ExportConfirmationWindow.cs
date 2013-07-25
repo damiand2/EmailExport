@@ -26,7 +26,8 @@ namespace ExportLogic
             lMessage.Text = string.Format("{0} message(s) will be exported to {1} Folder. \r\nDo you want to continue?", MailCount, Target.Type);
             lProjectName.Text = Target.ProjectNumber + " " + Target.ProjectName;
             LoadDirectories();
-        }
+            
+        }       
 
         private void LoadDirectories()
         {
@@ -45,7 +46,12 @@ namespace ExportLogic
             lbDirectories.DisplayMember = "Name";
             lbDirectories.DataSource = dirs;               
             lbDirectories.SelectedIndex = -1;
-
+            if (string.IsNullOrEmpty(Target.SubFolder))
+                return;
+            ceSubfolderExport.Checked = true;
+            var selectedDir = dirs.FirstOrDefault(d => string.Equals(Target.SubFolder, d.Name, StringComparison.OrdinalIgnoreCase));
+            if (selectedDir != null)
+                lbDirectories.SelectedItem = selectedDir;
         }
 
         private void bOk_Click(object sender, EventArgs e)
@@ -60,6 +66,7 @@ namespace ExportLogic
             {
                 var dir = (DirectoryInfo)lbDirectories.SelectedItem;
                 Target.ProjectPath = dir.FullName;
+                Target.SubFolder = dir.Name;
             }
             Close();
 

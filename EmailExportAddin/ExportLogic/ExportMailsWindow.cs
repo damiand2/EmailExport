@@ -114,19 +114,7 @@ namespace ExportLogic
 		private void tbProjectNumber_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			if ((int)e.KeyChar == (int)System.Windows.Forms.Keys.Enter)
-				RefreshResults();
-			//ThreadPool.QueueUserWorkItem(o =>
-			//{
-			//    Thread.Sleep(350);
-			//    string value = (string)o;
-			//    this.BeginInvoke((Action)(()=>
-			//    {
-			//        if(!string.Equals(value, tbProjectNumber.Text, StringComparison.OrdinalIgnoreCase))
-			//            return;
-			//    }));
-			//    ApplicationController.GuiThreadMarshaller.MarshalToGuiThreadAsync(
-			//        s => TeCaseNameChangedAfterTimeout((string)s), o);
-			//}, tbProjectNumber.Text);
+				RefreshResults();			
 		}
 
 
@@ -148,9 +136,7 @@ namespace ExportLogic
 			if (result == null)
 				return;
 
-			lProjectName.Text = result.ProjectName;
-			//if (tbProjectNumber.Text !=result.ProjectNumber)
-			//    tbProjectNumber.Text = result.ProjectNumber;
+			lProjectName.Text = result.ProjectName;			
 		}
 
 		private void BindResults()
@@ -319,7 +305,7 @@ namespace ExportLogic
 
 		private void PersistSettings(SingleResult target)
 		{
-			MruItem item = new MruItem { ProjectNumber = target.ProjectNumber, ProjectType = target.Type, ProjectName = target.ProjectName };
+			MruItem item = new MruItem { ProjectNumber = target.ProjectNumber, ProjectType = target.Type, SubFolder = target.SubFolder, ProjectName = target.ProjectName };
 			userSettings.MruItems.Remove(item);
 			userSettings.MruItems.Insert(0, item);
 			if (userSettings.MruItems.Count > 20)
@@ -346,6 +332,7 @@ namespace ExportLogic
 			settingUserSettings = true;
 			lbExportHistory.SelectedIndex = -1;
 			settingUserSettings = false;
+            results.Results.ForEach(r => r.SubFolder = item.SubFolder);
 		}
 	}
 }

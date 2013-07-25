@@ -319,6 +319,6 @@ namespace ExportLogic
         public string WarningMessage;
         public bool FatalError;
         public string EmailFolderPath;
-
+        public string SubFolder;
     }
 }
