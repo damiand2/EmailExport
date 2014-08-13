@@ -21,6 +21,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0FC7CB3B0249E244596052183416C844"
+        "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0FC7CB3B0249E244596052183416C844"
+        "OwnerKey" = "8:_5C2006A4F48882019C23DE77D267D346"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1438960F3546443FA3447CAC613C38DE"
         "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
         "MsmSig" = "8:_UNDEFINED"
@@ -51,6 +63,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5C2006A4F48882019C23DE77D267D346"
+        "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -65,6 +83,12 @@
         {
         "MsmKey" = "8:_7A810D998C1153787BD5BF8A7A7F4305"
         "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7A810D998C1153787BD5BF8A7A7F4305"
+        "OwnerKey" = "8:_5C2006A4F48882019C23DE77D267D346"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -137,6 +161,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8F950D0F12CA0A2DBB6242148C68DF15"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5C2006A4F48882019C23DE77D267D346"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -407,6 +437,37 @@
                     }
                 }
             "SourcePath" = "8:Microsoft.VisualStudio.Tools.Applications.Runtime.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C326303D5441425BA4FEB24AAF6920F6"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5C2006A4F48882019C23DE77D267D346"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ExportLogic, Version=1.6.5338.36527, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5C2006A4F48882019C23DE77D267D346"
+                    {
+                    "Name" = "8:ExportLogic.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ExportLogic.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C326303D5441425BA4FEB24AAF6920F6"
@@ -707,11 +768,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ExportMail32Setup"
         "ProductCode" = "8:{5E9689EF-2D2E-4381-9349-7C1C455FAA16}"
-        "PackageCode" = "8:{0EEB0290-1757-4B22-B151-D339F545A59C}"
+        "PackageCode" = "8:{B4A8FC8C-A92E-4A99-92BD-9EC96A16FBD9}"
         "UpgradeCode" = "8:{D3FCA3BA-09D3-45E6-A674-EA75C0A05A89}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
