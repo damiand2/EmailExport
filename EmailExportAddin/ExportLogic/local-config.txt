@@ -1,3 +1,1 @@
-﻿NetworkConfigPath:\\192.168.128.8\Dropbox\dde\config.txt
-NetworkConfigPath:\\T510W7DDE\fake_share\config.txt
-
+﻿NetworkConfigPath:\\DDE-ASUS\EmailExportrFakeShare\config.txt

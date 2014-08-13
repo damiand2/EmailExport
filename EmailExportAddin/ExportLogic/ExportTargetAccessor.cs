@@ -176,12 +176,18 @@ namespace ExportLogic
         private void GatherAllResults(string number, string yearPart, FindResults results)
         {
             var result = FindResult(settings.MarketingPath, yearPart, number +"00");
+            if(result.Exists == false)
+                result = FindResult(settings.MarketingPath, yearPart, number);
             result.Type = TargetType.Marketing;
             results.Results.Add(result);
-            result = FindResult(settings.ProjectPath, yearPart, number);
+            result = FindResult(settings.ProjectPath, yearPart, number + "00");
+            if (result.Exists == false)
+                result = FindResult(settings.ProjectPath, yearPart, number);
             result.Type = TargetType.Project;
             results.Results.Add(result);
             result = FindResult(settings.ProposalPath, yearPart, number + "00");
+            if (result.Exists == false)
+                result = FindResult(settings.ProposalPath, yearPart, number);
             result.Type = TargetType.Proposal;
             results.Results.Add(result);
         }

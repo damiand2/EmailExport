@@ -105,7 +105,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="logging.config" />
+    <Content Include="logging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
