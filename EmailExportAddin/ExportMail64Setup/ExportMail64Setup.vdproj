@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:ExportMail32Setup"
+"ProjectName" = "8:ExportMail64Setup"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -15,14 +15,8 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0137721D339D3742FF9203B6D2C7A7B9"
+        "MsmKey" = "8:_0955D4A9FB62213236B650EC8CA21672"
         "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_0F68FECBB175475CA49CF8DC4A06F29A"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -34,13 +28,13 @@
         "Entry"
         {
         "MsmKey" = "8:_0FC7CB3B0249E244596052183416C844"
-        "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
+        "OwnerKey" = "8:_0955D4A9FB62213236B650EC8CA21672"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_0FC7CB3B0249E244596052183416C844"
-        "OwnerKey" = "8:_0137721D339D3742FF9203B6D2C7A7B9"
+        "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -53,6 +47,12 @@
         {
         "MsmKey" = "8:_22D4BFBB90AB6B17FAAA3315B906F60F"
         "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2CC099DBC0E049FCACF3C059CEFE5F48"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -81,6 +81,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6C79B5B04665406E9FD772279475A4F0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_7177780B705F75487B7EC1B22B6A1228"
         "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
         "MsmSig" = "8:_UNDEFINED"
@@ -94,7 +100,7 @@
         "Entry"
         {
         "MsmKey" = "8:_7A810D998C1153787BD5BF8A7A7F4305"
-        "OwnerKey" = "8:_0137721D339D3742FF9203B6D2C7A7B9"
+        "OwnerKey" = "8:_0955D4A9FB62213236B650EC8CA21672"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -125,12 +131,6 @@
         {
         "MsmKey" = "8:_A6E16563E261D5BDF8C925FF21F3B59E"
         "OwnerKey" = "8:_5E24BCADEC2342DE8CEA04C726F23D16"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AB596511D6E84084B8C97634F9E21369"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -166,7 +166,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0137721D339D3742FF9203B6D2C7A7B9"
+        "OwnerKey" = "8:_0955D4A9FB62213236B650EC8CA21672"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -243,7 +243,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:..\\..\\..\\output\\setup32\\ExportMail32Setup.msi"
+        "OutputFilename" = "8:..\\..\\..\\output\\setup64\\ExportMail64Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -275,7 +275,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:..\\..\\..\\output\\setup32\\ExportMail32Setup.msi"
+        "OutputFilename" = "8:..\\..\\..\\output\\setup64\\ExportMail64Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -330,13 +330,18 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0137721D339D3742FF9203B6D2C7A7B9"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0955D4A9FB62213236B650EC8CA21672"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ExportLogic, Version=1.6.5350.35231, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ExportLogic, Version=1.6.5350.35329, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_0955D4A9FB62213236B650EC8CA21672"
+                    {
+                    "Name" = "8:ExportLogic.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:ExportLogic.dll"
             "TargetName" = "8:"
@@ -354,26 +359,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F68FECBB175475CA49CF8DC4A06F29A"
-            {
-            "SourcePath" = "8:..\\..\\..\\output\\EmailExportAddin.vsto"
-            "TargetName" = "8:EmailExportAddin.vsto"
-            "Tag" = "8:"
-            "Folder" = "8:_C326303D5441425BA4FEB24AAF6920F6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0FC7CB3B0249E244596052183416C844"
@@ -469,6 +454,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2CC099DBC0E049FCACF3C059CEFE5F48"
+            {
+            "SourcePath" = "8:..\\..\\..\\output\\EmailExportAddin.vsto"
+            "TargetName" = "8:EmailExportAddin.vsto"
+            "Tag" = "8:"
+            "Folder" = "8:_C326303D5441425BA4FEB24AAF6920F6"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2D86A2D7F425265B721D004D18A97085"
             {
             "AssemblyRegister" = "3:1"
@@ -498,6 +503,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C79B5B04665406E9FD772279475A4F0"
+            {
+            "SourcePath" = "8:..\\..\\..\\output\\EmailExportAddin.dll.manifest"
+            "TargetName" = "8:EmailExportAddin.dll.manifest"
+            "Tag" = "8:"
+            "Folder" = "8:_C326303D5441425BA4FEB24AAF6920F6"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7177780B705F75487B7EC1B22B6A1228"
@@ -624,26 +649,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AB596511D6E84084B8C97634F9E21369"
-            {
-            "SourcePath" = "8:..\\..\\..\\output\\EmailExportAddin.dll.manifest"
-            "TargetName" = "8:EmailExportAddin.dll.manifest"
-            "Tag" = "8:"
-            "Folder" = "8:_C326303D5441425BA4FEB24AAF6920F6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E4A2EC0DC2E77E63D45ABBD0989FBC38"
             {
             "AssemblyRegister" = "3:1"
@@ -736,7 +741,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_C326303D5441425BA4FEB24AAF6920F6"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFiles64Folder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -761,10 +766,10 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:ExportMail32Setup"
-        "ProductCode" = "8:{5E9689EF-2D2E-4381-9349-7C1C455FAA16}"
-        "PackageCode" = "8:{B4A8FC8C-A92E-4A99-92BD-9EC96A16FBD9}"
-        "UpgradeCode" = "8:{D3FCA3BA-09D3-45E6-A674-EA75C0A05A89}"
+        "ProductName" = "8:ExportMail64Setup"
+        "ProductCode" = "8:{A269C763-4238-4240-B453-FB83278BC1FF}"
+        "PackageCode" = "8:{8CBBE233-B31E-4A2B-AE9E-518C598E3383}"
+        "UpgradeCode" = "8:{1B2855C8-6E4C-4F7B-9EB1-B57A492D5F17}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -774,7 +779,7 @@
         "Manufacturer" = "8:Default Company Name"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:ExportMail32Setup"
+        "Title" = "8:ExportMail64Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Damian Dekoszczak"
         "Keywords" = "8:"
@@ -784,7 +789,7 @@
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:0"
+        "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
@@ -822,56 +827,6 @@
                                     "Transitive" = "11:FALSE"
                                         "Keys"
                                         {
-                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_34881610A1BF430B9278EC83C79174FD"
-                                            {
-                                            "Name" = "8:12.0"
-                                            "Condition" = "8:"
-                                            "AlwaysCreate" = "11:FALSE"
-                                            "DeleteAtUninstall" = "11:FALSE"
-                                            "Transitive" = "11:FALSE"
-                                                "Keys"
-                                                {
-                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_DE8289A1193D49878F64B77929DA978C"
-                                                    {
-                                                    "Name" = "8:Common"
-                                                    "Condition" = "8:"
-                                                    "AlwaysCreate" = "11:FALSE"
-                                                    "DeleteAtUninstall" = "11:FALSE"
-                                                    "Transitive" = "11:FALSE"
-                                                        "Keys"
-                                                        {
-                                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_F290E08711654D5F812511D8F2238DCB"
-                                                            {
-                                                            "Name" = "8:General"
-                                                            "Condition" = "8:"
-                                                            "AlwaysCreate" = "11:FALSE"
-                                                            "DeleteAtUninstall" = "11:FALSE"
-                                                            "Transitive" = "11:FALSE"
-                                                                "Keys"
-                                                                {
-                                                                }
-                                                                "Values"
-                                                                {
-                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_1C0B11FC496F4E81A0CCAC713746AD06"
-                                                                    {
-                                                                    "Name" = "8:EnableLocalMachineVSTO"
-                                                                    "Condition" = "8:"
-                                                                    "Transitive" = "11:FALSE"
-                                                                    "ValueTypes" = "3:3"
-                                                                    "Value" = "3:1"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        "Values"
-                                                        {
-                                                        }
-                                                    }
-                                                }
-                                                "Values"
-                                                {
-                                                }
-                                            }
                                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_70E9473BA32344838766177782EF9261"
                                             {
                                             "Name" = "8:Outlook"
