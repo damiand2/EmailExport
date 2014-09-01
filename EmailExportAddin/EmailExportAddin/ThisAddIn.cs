@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using Office = Microsoft.Office.Core;
+using System.IO;
 
 namespace EmailExportAddin
 {
@@ -12,7 +13,7 @@ namespace EmailExportAddin
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("logging.config"));
+            log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logging.config")));
             var log  = log4net.LogManager.GetLogger(typeof(ThisAddIn));
             log.Info("Starting adding. OS ver: " + Environment.OSVersion + " . Runtime ver: " + Environment.Version + " . Outlook Ver: " + Application.Version);
         }
